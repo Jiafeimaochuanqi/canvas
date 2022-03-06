@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Main.qml</file>
+        <file>HW1.qml</file>
+        <file>ColorSquare.qml</file>
+        <file>HW2.qml</file>
+        <file>HW3.qml</file>
+        <file>HW4.qml</file>
+    </qresource>
+</RCC>
