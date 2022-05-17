@@ -11,12 +11,14 @@ class Backend : public QObject
     Q_OBJECT
         //注册属性，使之可以在QML中访问--具体语法百度Q_PROPERTY
         Q_PROPERTY(QVariantList input READ getInput NOTIFY inputChanged)
+        Q_PROPERTY(QVariantList control READ getControl NOTIFY inputChanged)
         Q_PROPERTY(InterPolyDraw interPoly READ getInterPoly WRITE setInterPoly NOTIFY interPolyChanged)
         Q_PROPERTY(InterGaussDraw interGauss READ getInterGauss WRITE setInterGauss NOTIFY interGaussChanged)
         Q_PROPERTY(LeastSquaresDraw leastSquares READ getLeastSquares WRITE setLeastSquares NOTIFY leastSquaresChanged)
         Q_PROPERTY(LeastSquaresDraw regression READ getRegression WRITE setRegression NOTIFY leastSquaresChanged)
         Q_PROPERTY(FittingType fittingType READ getFittingType WRITE setFittingType)
         Q_PROPERTY(ParameterizationType parameterizationType READ getParameterizationType WRITE setParameterizationType)
+        Q_PROPERTY(CurveType curveType READ getCurveType WRITE setCurveType)
         Q_PROPERTY(ParameterizationDraw uniform READ getUniform WRITE setUniform NOTIFY uniformChanged)
         Q_PROPERTY(ParameterizationDraw chordal READ getChordal WRITE setChordal NOTIFY chordalChanged)
         Q_PROPERTY(ParameterizationDraw centripetal READ getCentripetal WRITE setCentripetal NOTIFY centripetalChanged)
@@ -28,9 +30,12 @@ public:
     enum FittingType{CubicSpline=0,LeastSquares,Regression,Gauss};
     Q_ENUMS(FittingType)
     enum ParameterizationType{Uniform=0,Chordal,Centripetal,Foley};
+    enum CurveType{Bspline=0,Bezier};
     Q_ENUMS(ParameterizationType)
+    Q_ENUMS(CurveType)
     Backend(QObject *parent=0);
     QVariantList getInput() const;
+    QVariantList getControl() const;
     const InterPolyDraw& getInterPoly() const;
     const LeastSquaresDraw& getLeastSquares() const;
     const LeastSquaresDraw& getRegression() const;
@@ -48,6 +53,7 @@ public:
     Q_INVOKABLE void setControl(QPointF p);//功能为处理数据
     Q_INVOKABLE void parameterization();//功能为处理数据
     Q_INVOKABLE void parameterizationDynamic();//功能为处理数据
+    Q_INVOKABLE void bezier();//功能为处理数据
     const InterGaussDraw &getInterGauss() const;
     void setInterGauss(const InterGaussDraw &newInterGauss);
 
@@ -76,6 +82,9 @@ public:
     int getMoveNodeNum() const;
     void setMoveNodeNum(int newMoveNodeNum);
 
+    const CurveType &getCurveType() const;
+    void setCurveType(const CurveType &newCurveType);
+
 signals:
     //信号可以在QML中访问
     void inputChanged(QVector<QPointF> input);
@@ -94,6 +103,7 @@ private:
     bool change;
     FittingType fittingType;
     ParameterizationType parameterizationType;
+    CurveType curveType;
     QVector<QPointF> input;
     std::vector<float> inputX;
     std::vector<float> inputY;
@@ -108,7 +118,7 @@ private:
     ParameterizationDraw foley;
     ControlPointArray2D controlArray;
     int moveNodeNum=-1;
-    double maxChoosedist = 4;
+    double maxChoosedist = 10;
 
     void calculateParamRange(int range_num);
     void calculateRange(int index);

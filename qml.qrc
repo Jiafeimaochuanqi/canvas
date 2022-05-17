@@ -6,5 +6,7 @@
         <file>HW2.qml</file>
         <file>HW3.qml</file>
         <file>HW4.qml</file>
+        <file>HW5.qml</file>
+        <file>Bezier.qml</file>
     </qresource>
 </RCC>

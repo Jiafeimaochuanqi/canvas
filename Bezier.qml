@@ -5,10 +5,8 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 import Qt.labs.platform 1.1
 
-//引入我们注册的模块
-import MyCppObject 1.0
 Item {
-    id: hw4
+    id: bezier
     visible: true
     width: 500
     height: 500
@@ -17,21 +15,15 @@ Item {
         objectName: "mainPageLoader"
         anchors.fill:  parent
     }*/
-
-    CppObject{
-        id: cppObject
-        curveType:CppObject.Bspline
-        onInputChanged://相应inputChanged信号
-        {
-            parameterizationDynamic();
-            canvas_ruler.requestPaint();
-        }
-    }
-
-
-
+    property int selectIndex:0
+    property bool lockSelect: false
+    property bool cubicHideSelect: false
+    property bool draggingCubic: false
+    property bool change:false
+    property var cubicPoints:[]
+    property int dragPointIndex: -1
     Row {
-        id: lineTool
+        id: colorTool
         anchors {
             horizontalCenter: parent.horizontalCenter
             top: parent.top
@@ -47,61 +39,45 @@ Item {
             ColorSquare
             {
                 color: modelData
+                Component.onCompleted: active=(selectIndex === index?true:false)
+                onClicked: {
+                    for (var i = 0; i < lineColor.count; ++i){
+                        lineColor.itemAt(i).active=false;
+                    }
+                    active=true;
+                    selectIndex=index;
+                }
             }
         }
 
     }
-    function getSate(text){
-        if(text==="Uniform"){
-            return cppObject.uniform.visible;
-        }else if(text==="Chordal"){
-            return cppObject.chordal.visible;
-        }else if(text==="Centripetal"){
-            return cppObject.centripetal.visible;
-        }else if(text==="Foley"){
-            return cppObject.foley.visible;
-        }else{
-            console.error("unknow checkbox")
-            return false;
-        }
-    }
 
-
-
-
-
-    ExclusiveGroup { id: parameterizationType }
     Row{
-        id: radioButton
+        id: checkBoxes
         anchors {
             horizontalCenter: parent.horizontalCenter
-            top: lineTool.bottom
+            top: colorTool.bottom
             topMargin: 8
         }
+
         spacing: 4
-
-        Repeater
+        CheckBox
         {
-            id:radioButtonRepeater
-            model: ["Uniform","Chordal","Centripetal","Foley"]
-
-            RadioButton
-            {
-                text: modelData
-                exclusiveGroup: parameterizationType
-                Component.onCompleted: checked=(cppObject.parameterizationType === index?true:false)
-                onClicked:
-                {
-                    cppObject.parameterizationType=index
-                    cppObject.parameterizationDynamic();
-                    canvas_ruler.requestPaint();
-                }
-
+            id:lockSelect
+            text: "Lock Control Point Pairs"
+            onClicked: {
+                doLock(cubicPoints);
+            }
+        }
+        CheckBox
+        {
+            id:cubicHideSelect
+            text: "Hide Controls"
+            onClicked: {
+                canvas_ruler.requestPaint();
             }
         }
     }
-
-
 
     function drawCross(ctx,rulerWidth){
         var config={
@@ -217,51 +193,118 @@ Item {
         }
 
     }
-    function drawPoint(ctx,pos,pointColor="#FF0000",pointType="arc"){
-        ctx.fillStyle = pointColor;
-        if(pos.length>0){
-            for(var j = 0,len=pos.length; j < len; j++) {
-                ctx.moveTo(pos[j].x, pos[j].y)
-                if(pointType === "arc"){
-                    ctx.arc(pos[j].x,pos[j].y,5,0,2*Math.PI);
-                    ctx.fill()
-                }
-                else{
-                    ctx.fillRect(pos[j].x-5,pos[j].y-5,10,10);
-                    ctx.fill();
-                }
-            }
-        }
-    }
-    function drawCurve(ctx,pos,lineColor="#FF0000"){
-        ctx.strokeStyle = lineColor
-        ctx.lineWidth = 1
-        if(pos.length>0){
-            ctx.beginPath()
 
-            ctx.moveTo(pos[0].x, pos[0].y)
-            for(var j = 1,len=pos.length; j < len; j++) {
-                ctx.lineTo(pos[j].x,pos[j].y)
-                ctx.moveTo(pos[j].x,pos[j].y)
+    function doLock(cubicPoints) {
+        if ( lockSelect.checked ) {
+            for(var i=4;i<cubicPoints.length;i+=3){
+                cubicPoints[i].x = 2*cubicPoints[i-1].x - cubicPoints[i-2].x;
+                cubicPoints[i].y = 2*cubicPoints[i-1].y - cubicPoints[i-2].y;
             }
-            ctx.stroke()
+        }
+        canvas_ruler.requestPaint();
+    }
+    function disk( ctx, x, y, radius ) {
+        ctx.beginPath();
+        ctx.arc(x,y,radius,0,Math.PI*2);
+        ctx.fill();
+
+    }
+    function cubicDraw(ctx,cubicPoints,lineColor="#FF0000"){
+        var i;
+        ctx.fillStyle = "white";
+        //ctx.fillRect(0,0,600,600);
+        if ( ! cubicHideSelect.checked ) {
+            ctx.lineWidth = 1;
+            if (lockSelect.checked) {
+                ctx.strokeStyle = "#880000";
+            }
+            else {
+                ctx.strokeStyle = "#888888";
+            }
+            for (i = 0; i < cubicPoints.length-1; i++) {
+                if (i % 3 != 1) {
+                    ctx.beginPath();
+                    ctx.moveTo( cubicPoints[i].x + .5, cubicPoints[i].y + .5 );
+                    ctx.lineTo( cubicPoints[i+1].x + .5, cubicPoints[i+1].y + .5 );
+                    ctx.stroke();
+                }
+            }
+            for (i = 0; i < cubicPoints.length; i++) {
+                if ( i % 3 == 0 ) {
+                    ctx.fillStyle="black";
+                    disk(ctx, cubicPoints[i].x, cubicPoints[i].y, 5);
+                }
+                else {
+                    ctx.fillStyle= "blue";
+                    ctx.fillRect(cubicPoints[i].x - 5, cubicPoints[i].y - 5, 10, 10);
+
+                }
+            }
+            if(cubicPoints.length>0){
+                ctx.beginPath();
+                ctx.moveTo(cubicPoints[0].x,cubicPoints[0].y);
+                for (i = 1; i <= cubicPoints.length-3; i += 3) {
+                    ctx.bezierCurveTo(cubicPoints[i].x,cubicPoints[i].y,
+                                      cubicPoints[i+1].x,cubicPoints[i+1].y,
+                                      cubicPoints[i+2].x,cubicPoints[i+2].y);
+                }
+                ctx.lineWidth = 2;
+                //ctx.strokeStyle = "black";
+                ctx.strokeStyle=lineColor;
+                ctx.stroke();
+            }
         }
     }
-    function drawControlBar(ctx,control,left,right,lineColor="#FF0000"){
-        drawPoint(ctx,left,"#0000FF","rect")
-        //drawPoint(ctx,control,lineColor)
-        drawPoint(ctx,right,"#0000FF","rect")
-        ctx.strokeStyle = lineColor;
-        ctx.lineWidth = 2;
-        if(control.length>0){
-            ctx.beginPath()
-            for(var j = 0,len=control.length; j < len; j++) {
-                ctx.moveTo(left[j].x,left[j].y)
-                ctx.lineTo(control[j].x,control[j].y)
-                ctx.moveTo(control[j].x,control[j].y)
-                ctx.lineTo(right[j].x,right[j].y)
+    function doMouseUp() {
+        draggingCubic = false;
+    }
+    function doCubicMouseDown(ctx,cubicPoints,point) {
+        if (draggingCubic || cubicHideSelect.checked) {
+            return;
+        }
+        dragPointIndex=-1;
+        var x = Math.round(point.x);
+        var y = Math.round(point.y);
+        if(cubicPoints.length>0){
+            for (var i = cubicPoints.length-1; i >= 0; i--) {
+                var p = cubicPoints[i];
+                if (Math.abs(p.x - x) <= 5 && Math.abs(p.y - y) <= 5) {
+                    draggingCubic = true;
+                    dragPointIndex = i;
+                    return;
+                }
             }
-            ctx.stroke()
+        }
+    }
+    function doCubicMouseMove(ctx,cubicPoints,point) {
+        if (!draggingCubic||dragPointIndex==-1) {
+            return;
+        }
+        var x = Math.round(point.x);
+        var y = Math.round(point.y);
+        var offsetX = x - cubicPoints[dragPointIndex].x;
+        var offsetY = y - cubicPoints[dragPointIndex].y;
+        cubicPoints[dragPointIndex].x = x;
+        cubicPoints[dragPointIndex].y = y;
+        if ( dragPointIndex % 3 == 0) {
+            if (dragPointIndex > 0) {
+                cubicPoints[dragPointIndex - 1].x += offsetX;
+                cubicPoints[dragPointIndex - 1].y += offsetY;
+            }
+            if (dragPointIndex < cubicPoints.length-1) {
+                cubicPoints[dragPointIndex + 1].x += offsetX;
+                cubicPoints[dragPointIndex + 1].y += offsetY;
+            }
+        }
+        else if (lockSelect.checked) {
+            if (dragPointIndex%3 == 2&&dragPointIndex<cubicPoints.length-2) {
+                cubicPoints[dragPointIndex+2].x = 2*cubicPoints[dragPointIndex+1].x - cubicPoints[dragPointIndex].x;
+                cubicPoints[dragPointIndex+2].y = 2*cubicPoints[dragPointIndex+1].y - cubicPoints[dragPointIndex].y;
+            }
+            else if (dragPointIndex%3 == 1&&dragPointIndex>= 2) {
+                cubicPoints[dragPointIndex-2].x = 2*cubicPoints[dragPointIndex-1].x - cubicPoints[dragPointIndex].x;
+                cubicPoints[dragPointIndex-2].y = 2*cubicPoints[dragPointIndex-1].y - cubicPoints[dragPointIndex].y;
+            }
         }
     }
     Canvas {
@@ -270,7 +313,7 @@ Item {
         anchors {
             left: parent.left
             right: parent.right
-            top: radioButton.bottom
+            top: checkBoxes.bottom
             bottom: parent.bottom
             //margins: 50
         }
@@ -279,15 +322,11 @@ Item {
 
         onPaint: {
 
-            var ctx = getContext('2d');
+            var ctx = getContext('2d')
             ctx.clearRect(0, 0, width,height);
             drawRuler(ctx,rulerWidth);
             drawCross(ctx,rulerWidth);
-            drawPoint(ctx,cppObject.input,"#000000");
-            drawCurve(ctx,cppObject.controlArray.pos,lineColor.model[cppObject.parameterizationType]);
-            if(cppObject.change){
-                drawControlBar(ctx,cppObject.controlArray.control,cppObject.controlArray.leftControl,cppObject.controlArray.rightControl,lineColor.model[cppObject.parameterizationType])
-            }
+            cubicDraw(ctx,cubicPoints,lineColor.model[selectIndex]);
         }
 
         MouseArea {
@@ -295,50 +334,35 @@ Item {
             acceptedButtons:Qt.LeftButton | Qt.RightButton
             anchors.fill: parent
 
-            /*
+
             onPressed: {
-                canvas.lastX = mouseX
-                canvas.lastY = mouseY
+                var ctx = canvas_ruler.getContext('2d');
+                if(change){
+                    doCubicMouseDown(ctx,cubicPoints,Qt.point(mouseX,mouseY));
+                }
             }
-            onPositionChanged: {
-                canvas.requestPaint()
-            }*/
-            onClicked: (mouse)=>{
-                           console.log(cppObject.curveType);
-                           if (mouse.button === Qt.RightButton ) {
-                               if(cppObject.change&&cppObject.moveNodeNum!=-1){
-                                   cppObject.setControl(Qt.point(mouseX,mouseY))
-                                   canvas_ruler.requestPaint();
-                                   hoverEnabled=false;
-                                   cppObject.moveNodeNum=-1
-                               }else{
-                                   option_menu.open()
-                               }
-
-                           }else{
-                               if(cppObject.change){
-                                   if(cppObject.moveNodeNum==-1){
-                                       cppObject.findSuitableCtrlPoint(Qt.point(mouseX,mouseY))
-                                       console.log(cppObject.moveNodeNum)
-                                   }
-                                   if(cppObject.moveNodeNum!=-1){
-                                       hoverEnabled=true
-                                   }
-                               }else{
-                                   cppObject.addInput(Qt.point(mouseX,mouseY))//调用Q_INVOKABLE宏标记的函数
-                               }
-
-
-                           }
-                       }
             onReleased: {
+                doMouseUp();
                 canvas_ruler.requestPaint()
             }
+
+            /*
+                onPositionChanged: {
+                    canvas.requestPaint()
+                }*/
+            onClicked: (mouse)=>{
+                           if (mouse.button === Qt.RightButton ) {
+                               option_menu.open();
+                           }else{
+                               if(change)return;
+                               cubicPoints.push(Qt.point(mouseX,mouseY));
+                           }
+                       }
+
             onPositionChanged:{
-                if(cppObject.change&&cppObject.moveNodeNum!=-1){
-                    cppObject.setControl(Qt.point(mouseX,mouseY))
-                    canvas_ruler.requestPaint();
-                }
+                var ctx = canvas_ruler.getContext('2d');
+                doCubicMouseMove(ctx,cubicPoints,Qt.point(mouseX,mouseY));
+                canvas_ruler.requestPaint();
             }
         }
     }
@@ -350,26 +374,26 @@ Item {
             text: "Clear"
             shortcut: "Ctrl+C"
             onTriggered: {
-                cppObject.clearInput()
-                canvas_ruler.requestPaint()
+                cubicPoints=[];
+                canvas_ruler.requestPaint();
             }
         }
-
         MenuItem {
             text: "Modify"
             shortcut: "Ctrl+E"
-            Component.onCompleted: text=(cppObject.change?"No Modify":"Modify")
+            Component.onCompleted: text=(change?"No Modify":"Modify")
             onTriggered: {
-                if(cppObject.change){
-                    cppObject.change=false;
+                if(change){
+                    change=false;
                     text="Modify"
                 }else{
-                    cppObject.change=true;
+                    change=true;
                     text="No Modify"
                 }
                 canvas_ruler.requestPaint()
             }
         }
+
 
         MenuSeparator { }
 

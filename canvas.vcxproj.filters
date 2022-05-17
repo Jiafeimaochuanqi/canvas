@@ -56,18 +56,12 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    
-    
-    
-    
     <CustomBuild Include="debug\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
     <CustomBuild Include="release\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
-    
-    
   </ItemGroup>
   <ItemGroup>
     <None Include="ColorSquare.qml">
@@ -91,5 +85,8 @@
     <QtRcc Include="qml.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
+    <None Include="HW5.qml">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

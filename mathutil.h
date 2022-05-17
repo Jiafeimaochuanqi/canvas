@@ -337,5 +337,17 @@ public:
         }
         return param;
     }
+    static Eigen::Vector2f recursive_bezier(const std::vector<Eigen::Vector2f> &control_points, float t)
+    {
+        // TODO: Implement de Casteljau's algorithm
+        int n=control_points.size()-1;
+        std::vector<Eigen::Vector2f> f=control_points;
+        for(int r=1;r<=n;++r){
+            for(int i=0;i<=n-r;++i){
+                f[i]=(1.0-t)*f[i]+t*f[i+1];
+            }
+        }
+        return f[0];
+    }
 };
 #endif // MATHUTIL_H

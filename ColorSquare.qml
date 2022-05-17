@@ -41,7 +41,7 @@ Rectangle {
         id: area
         anchors.fill :parent
         onClicked: {
-            root.clicked()
+            root.clicked();
         }
     }
 }

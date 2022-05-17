@@ -6,6 +6,7 @@ Backend::Backend(QObject *parent): QObject(parent)
 {
     fittingType=FittingType::Gauss;
     parameterizationType=ParameterizationType::Foley;
+    curveType=CurveType::Bspline;
     change=false;
 }
 
@@ -14,6 +15,16 @@ QVariantList Backend::getInput() const
     QVariantList l;
     l.reserve(input.size());
     for(QPointF p:input){
+        l.append(p);
+    }
+    return l;
+}
+
+QVariantList Backend::getControl() const
+{
+    QVariantList l;
+    l.reserve(controlArray.control.size());
+    for(QPointF p:controlArray.control){
         l.append(p);
     }
     return l;
@@ -86,16 +97,39 @@ void Backend::clearInput()
 
 void Backend::addInput(QPointF p)
 {
-
+    int i=input.size();
     input.push_back(p);
     inputX.push_back(p.x());
     inputY.push_back(p.y());
-    controlArray.addPoint(p);
-    if (controlArray.nodeNum() >= 2) {
-        controlArray.drawPoints.push_back(NodeArr());
-        controlArray.xparam.push_back(std::vector<float>(4));
-        controlArray.yparam.push_back(std::vector<float>(4));
+    switch (curveType) {
+    case Bspline:
 
+        controlArray.addPoint(p);
+        if (controlArray.nodeNum() >= 2) {
+            controlArray.drawPoints.push_back(NodeArr());
+            controlArray.xparam.push_back(std::vector<float>(4));
+            controlArray.yparam.push_back(std::vector<float>(4));
+
+        }
+        break;
+    case Bezier:
+        switch (i%3) {
+        case 0:
+            controlArray.addPoint(p);
+            if(i>0){
+                controlArray.setLDiff(controlArray.nodeNum()-1,input[i-1]);
+            }
+            if (controlArray.nodeNum() >= 2) {
+                controlArray.drawPoints.push_back(NodeArr());
+            }
+            break;
+        case 1:
+            controlArray.setRDiff(controlArray.nodeNum()-1,p);
+            break;
+        case 2:
+            break;
+        }
+        break;
     }
     emit inputChanged(input);
 }
@@ -146,62 +180,126 @@ int Backend::findSuitableCtrlPoint(QPointF p)
 {
     int res = -1;
     double minv = 1e10;
-    for (int i = 0; i < controlArray.control.size(); ++i) {
-        double dist = sqrt(pow(p.x() - controlArray.control[i].x(), 2) + pow(p.y() - controlArray.control[i].y(), 2));
-        if (dist < minv && dist < maxChoosedist) {
-            minv = dist;
-            res = i;
+    switch (curveType) {
+    case Bspline:
+        for (int i = 0; i < controlArray.control.size(); ++i) {
+            double dist = sqrt(pow(p.x() - controlArray.control[i].x(), 2) + pow(p.y() - controlArray.control[i].y(), 2));
+            if (dist < minv && dist < maxChoosedist) {
+                minv = dist;
+                res = i;
+            }
         }
-    }
-    for (int i = 1; i < controlArray.leftControl.size(); ++i) {
-        double dist = sqrt(pow(p.x() - controlArray.leftControl[i].x(), 2) + pow(p.y() - controlArray.leftControl[i].y(), 2));
-        if (dist < minv && dist < maxChoosedist) {
-            minv = dist;
-            res = i+controlArray.nodeNum();
+        for (int i = 1; i < controlArray.leftControl.size(); ++i) {
+            double dist = sqrt(pow(p.x() - controlArray.leftControl[i].x(), 2) + pow(p.y() - controlArray.leftControl[i].y(), 2));
+            if (dist < minv && dist < maxChoosedist) {
+                minv = dist;
+                res = i+controlArray.nodeNum();
+            }
         }
-    }
-    for (int i = 0; i < controlArray.rightControl.size()-1; ++i) {
-        double dist = sqrt(pow(p.x() - controlArray.rightControl[i].x(), 2) + pow(p.y() - controlArray.rightControl[i].y(), 2));
-        if (dist < minv && dist < maxChoosedist) {
-            minv = dist;
-            res = i + 2 *controlArray.nodeNum();
+        for (int i = 0; i < controlArray.rightControl.size()-1; ++i) {
+            double dist = sqrt(pow(p.x() - controlArray.rightControl[i].x(), 2) + pow(p.y() - controlArray.rightControl[i].y(), 2));
+            if (dist < minv && dist < maxChoosedist) {
+                minv = dist;
+                res = i + 2 *controlArray.nodeNum();
+            }
         }
+        break;
+    case Bezier:
+        for (int i = 0; i < input.size(); ++i) {
+            double dist = sqrt(pow(p.x() - input[i].x(), 2) + pow(p.y() - input[i].y(), 2));
+            if (dist < minv && dist < maxChoosedist) {
+                minv = dist;
+                res = i;
+            }
+        }
+        break;
     }
+
+
     moveNodeNum=res;
     return res;
 }
 
 void Backend::setControl(QPointF p)
 {
+
     if(moveNodeNum==-1)return;
-    if (moveNodeNum < controlArray.nodeNum()){
+    switch (curveType) {
+    case Bspline:
+        if (moveNodeNum < controlArray.nodeNum()){
+            input[moveNodeNum]=p;
+            inputX[moveNodeNum]=p.x();
+            inputY[moveNodeNum]=p.y();
+            controlArray.setPoint(moveNodeNum,p);
+            if (moveNodeNum > 0) {
+                calculateParamRange(moveNodeNum - 1);
+            }
+            else if (moveNodeNum == 0) {
+                calculateParamRange(0);
+            }
+        }
+        else if (moveNodeNum < 2 * controlArray.nodeNum()){
+            int index=moveNodeNum - controlArray.nodeNum();
+            controlArray.setLDiff(index,p);
+            if (index > 0) {
+                calculateParamRange(index - 1);
+            }
+        }
+        else{
+            controlArray.setRDiff(moveNodeNum - 2 * controlArray.nodeNum(),p);
+            int index=moveNodeNum - 2*controlArray.nodeNum();
+            if (index < controlArray.fixed.size() - 1) {
+                calculateParamRange(index);
+            }
+        }
+		break;
+    case Bezier:
         input[moveNodeNum]=p;
         inputX[moveNodeNum]=p.x();
         inputY[moveNodeNum]=p.y();
-        controlArray.setPoint(moveNodeNum,p);
-        if (moveNodeNum > 0) {
-            calculateParamRange(moveNodeNum - 1);
+        int nodeIndex;
+        switch (moveNodeNum%3) {
+        case 0:           
+            nodeIndex=moveNodeNum/3;
+            controlArray.setPoint(nodeIndex,p);
+            if(moveNodeNum>0){
+
+                input[moveNodeNum-1].setX(controlArray.xs[nodeIndex].val - controlArray.xs[nodeIndex].ldiff * controlArray.showpara);
+                input[moveNodeNum-1].setY(controlArray.ys[nodeIndex].val - controlArray.ys[nodeIndex].ldiff *  controlArray.showpara);
+            }
+            if(moveNodeNum<input.size()-1){
+                input[moveNodeNum+1].setX(controlArray.xs[nodeIndex].val+ controlArray.xs[nodeIndex].rdiff * controlArray.showpara);
+                input[moveNodeNum+1].setY(controlArray.ys[nodeIndex].val+ controlArray.ys[nodeIndex].rdiff * controlArray.showpara);
+            }
+            updateCtrlPoints();
+            if (nodeIndex > 0) {
+                calculateParamRange(nodeIndex - 1);
+            }
+            else if (nodeIndex == 0) {
+                calculateParamRange(0);
+            }
+            break;
+        case 1:
+            nodeIndex=moveNodeNum/3;
+            controlArray.setRDiff(nodeIndex,p);
+            updateCtrlPoints();
+            if (nodeIndex < controlArray.fixed.size() - 1) {
+                calculateParamRange(nodeIndex);
+            }
+            break;
+        case 2:
+            nodeIndex=moveNodeNum/3+1;
+            if(nodeIndex<controlArray.nodeNum()){
+                controlArray.setLDiff(nodeIndex,p);
+                updateCtrlPoints();
+
+                if (nodeIndex > 0) {
+                    calculateParamRange(nodeIndex - 1);
+                }
+            }
+            break;
         }
-        else if (moveNodeNum == 0) {
-            calculateParamRange(0);
-        }
-        if (moveNodeNum < controlArray.nodeNum() - 1) {
-            calculateParamRange(moveNodeNum);
-        }
-    }
-    else if (moveNodeNum < 2 * controlArray.nodeNum()){
-        int index=moveNodeNum - controlArray.nodeNum();
-        controlArray.setLDiff(index,p);
-        if (index > 0) {
-            calculateParamRange(index - 1);
-        }
-    }
-    else{
-        controlArray.setRDiff(moveNodeNum - 2 * controlArray.nodeNum(),p);
-        int index=moveNodeNum - 2*controlArray.nodeNum();
-        if (index < controlArray.fixed.size() - 1) {
-            calculateParamRange(index);
-        }
+        break;
     }
 }
 
@@ -242,9 +340,19 @@ void Backend::parameterizationDynamic()
     }
     updateCtrlPoints();
     if (controlArray.nodeNum() >= 2) {
-        calculateParamRange(controlArray.xparam.size() - 1);
+        calculateParamRange(controlArray.drawPoints.size() - 1);
     }
 }
+
+void Backend::bezier()
+{
+    updateCtrlPoints();
+    if (controlArray.nodeNum() >= 2) {
+        calculateParamRange(controlArray.drawPoints.size() - 1);
+    }
+}
+
+
 
 const InterGaussDraw &Backend::getInterGauss() const
 {
@@ -363,6 +471,16 @@ void Backend::setMoveNodeNum(int newMoveNodeNum)
 {
     moveNodeNum = newMoveNodeNum;
 }
+
+const Backend::CurveType &Backend::getCurveType() const
+{
+    return curveType;
+}
+
+void Backend::setCurveType(const CurveType &newCurveType)
+{
+    curveType = newCurveType;
+}
 void Backend::calculateParamRange(int range_num)
 {
     int stpoint = range_num, edpoint = range_num + 1;
@@ -376,21 +494,43 @@ void Backend::calculateParamRange(int range_num)
     edpoint = (edpoint >= controlArray.fixed.size()) ? (controlArray.fixed.size()-1) : edpoint;
     std::vector<float> rangeXParam;
     std::vector<float> rangeYParam;
-    if (controlArray.xs[stpoint].fixed_diff == true||controlArray.xs[edpoint].fixed_diff == true) {
-        rangeXParam=MathUtil<float>::ThreeBlendingOneOrder(ts,inputX,stpoint,edpoint+1,controlArray.xs[stpoint].rdiff,controlArray.xs[edpoint].ldiff);
-        rangeYParam=MathUtil<float>::ThreeBlendingOneOrder(ts,inputY,stpoint,edpoint+1,controlArray.ys[stpoint].rdiff,controlArray.ys[edpoint].ldiff);
-    }else{
-        rangeXParam=MathUtil<float>::ThreeBlending2Order(ts,inputX,stpoint,edpoint+1);
-        rangeYParam=MathUtil<float>::ThreeBlending2Order(ts,inputY,stpoint,edpoint+1);
+    switch (curveType) {
+    case Bspline:
+        if (controlArray.xs[stpoint].fixed_diff == true||controlArray.xs[edpoint].fixed_diff == true) {
+            rangeXParam=MathUtil<float>::ThreeBlendingOneOrder(ts,inputX,stpoint,edpoint+1,controlArray.xs[stpoint].rdiff,controlArray.xs[edpoint].ldiff);
+            rangeYParam=MathUtil<float>::ThreeBlendingOneOrder(ts,inputY,stpoint,edpoint+1,controlArray.ys[stpoint].rdiff,controlArray.ys[edpoint].ldiff);
+        }else{
+            rangeXParam=MathUtil<float>::ThreeBlending2Order(ts,inputX,stpoint,edpoint+1);
+            rangeYParam=MathUtil<float>::ThreeBlending2Order(ts,inputY,stpoint,edpoint+1);
+        }
+        for (int i = stpoint; i <= edpoint - 1; ++i) {
+            int b = (i - stpoint) * 4;
+            controlArray.xparam[i] ={rangeXParam[b], rangeXParam[b + 1], rangeXParam[b + 2], rangeXParam[b + 3]};
+            controlArray.yparam[i] ={rangeYParam[b], rangeYParam[b + 1], rangeYParam[b + 2], rangeYParam[b + 3]};
+            calculateRange(i);
+        }
+        break;
+    case Bezier:
+        for (int i = stpoint; i <= edpoint - 1; ++i) {
+            Eigen::Vector2f p0(controlArray.control[i].x(),controlArray.control[i].y());
+            Eigen::Vector2f p1(controlArray.rightControl[i].x(),controlArray.rightControl[i].y());
+            Eigen::Vector2f p2(controlArray.leftControl[i+1].x(),controlArray.leftControl[i+1].y());
+            Eigen::Vector2f p3(controlArray.control[i+1].x(),controlArray.control[i+1].y());
+            std::vector<Eigen::Vector2f> controls={p0,p1,p2,p3};
+            std::vector<double> _xs(controlArray.nodePerRange+1), _ys(controlArray.nodePerRange+1);
+            for (int k = 0; k <= controlArray.nodePerRange; ++k) {
+                float curT = ((float)k  / controlArray.nodePerRange);
+                Eigen::Vector2f p=MathUtil<float>::recursive_bezier(controls,curT);
+                _xs[k] =p(0);
+                _ys[k] =p(1);
+            }
+            controlArray.drawPoints[i].xs.swap(_xs);
+            controlArray.drawPoints[i].ys.swap(_ys);
+        }
+        break;
     }
-    //std::cout << "stpoint:" << stpoint << std::endl;
-    //std::cout << "edpoint:" << edpoint << std::endl;
-    for (int i = stpoint; i <= edpoint - 1; ++i) {
-        int b = (i - stpoint) * 4;
-        controlArray.xparam[i] ={rangeXParam[b], rangeXParam[b + 1], rangeXParam[b + 2], rangeXParam[b + 3]};
-        controlArray.yparam[i] ={rangeYParam[b], rangeYParam[b + 1], rangeYParam[b + 2], rangeYParam[b + 3]};
-        calculateRange(i);
-    }
+
+
     updateDrawArray();
     updateCtrlPoints();
 }
@@ -398,19 +538,19 @@ void Backend::calculateParamRange(int range_num)
 void Backend::calculateRange(int i)
 {
     double t=ts[i+1]-ts[i];
-    std::vector<double> _xs(controlArray.nodePerRange), _ys(controlArray.nodePerRange);
-    for (int k = 0; k < controlArray.nodePerRange; ++k) {
+    std::vector<double> _xs(controlArray.nodePerRange+1), _ys(controlArray.nodePerRange+1);
+    for (int k = 0; k <= controlArray.nodePerRange; ++k) {
         double curT = (k * t / controlArray.nodePerRange);
         _xs[k] = controlArray.xparam[i][3] * pow(curT, 3) + controlArray.xparam[i][2] * pow(curT, 2) + controlArray.xparam[i][1] * curT + controlArray.xparam[i][0];
         _ys[k] = controlArray.yparam[i][3] * pow(curT, 3) + controlArray.yparam[i][2] * pow(curT, 2) + controlArray.yparam[i][1] * curT + controlArray.yparam[i][0];
     }
-    if(i==controlArray.nodeNum()-2){
-        double curT = ts[i+1]-ts[i];
-        double cx=controlArray.xparam[i][3] * pow(curT, 3) + controlArray.xparam[i][2] * pow(curT, 2) + controlArray.xparam[i][1] * curT + controlArray.xparam[i][0];
-        double cy= controlArray.yparam[i][3] * pow(curT, 3) + controlArray.yparam[i][2] * pow(curT, 2) + controlArray.yparam[i][1] * curT + controlArray.yparam[i][0];
-        _xs.push_back(cx);
-        _ys.push_back(cy);
-    }
+//    if(i==controlArray.nodeNum()-2){
+//        double curT = ts[i+1]-ts[i];
+//        double cx=controlArray.xparam[i][3] * pow(curT, 3) + controlArray.xparam[i][2] * pow(curT, 2) + controlArray.xparam[i][1] * curT + controlArray.xparam[i][0];
+//        double cy= controlArray.yparam[i][3] * pow(curT, 3) + controlArray.yparam[i][2] * pow(curT, 2) + controlArray.yparam[i][1] * curT + controlArray.yparam[i][0];
+//        _xs.push_back(cx);
+//        _ys.push_back(cy);
+//    }
 
 
     controlArray.xs[i].rdiff =  controlArray.xparam[i][1];

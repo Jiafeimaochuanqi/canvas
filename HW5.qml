@@ -8,7 +8,7 @@ import Qt.labs.platform 1.1
 //引入我们注册的模块
 import MyCppObject 1.0
 Item {
-    id: hw4
+    id: hw5
     visible: true
     width: 500
     height: 500
@@ -17,19 +17,20 @@ Item {
         objectName: "mainPageLoader"
         anchors.fill:  parent
     }*/
+    property int selectIndex:0
 
     CppObject{
         id: cppObject
-        curveType:CppObject.Bspline
+        curveType: CppObject.Bezier
         onInputChanged://相应inputChanged信号
         {
-            parameterizationDynamic();
+            bezier();
             canvas_ruler.requestPaint();
         }
     }
 
 
-
+    ExclusiveGroup { id: colorType }
     Row {
         id: lineTool
         anchors {
@@ -47,60 +48,18 @@ Item {
             ColorSquare
             {
                 color: modelData
-            }
-        }
-
-    }
-    function getSate(text){
-        if(text==="Uniform"){
-            return cppObject.uniform.visible;
-        }else if(text==="Chordal"){
-            return cppObject.chordal.visible;
-        }else if(text==="Centripetal"){
-            return cppObject.centripetal.visible;
-        }else if(text==="Foley"){
-            return cppObject.foley.visible;
-        }else{
-            console.error("unknow checkbox")
-            return false;
-        }
-    }
-
-
-
-
-
-    ExclusiveGroup { id: parameterizationType }
-    Row{
-        id: radioButton
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            top: lineTool.bottom
-            topMargin: 8
-        }
-        spacing: 4
-
-        Repeater
-        {
-            id:radioButtonRepeater
-            model: ["Uniform","Chordal","Centripetal","Foley"]
-
-            RadioButton
-            {
-                text: modelData
-                exclusiveGroup: parameterizationType
-                Component.onCompleted: checked=(cppObject.parameterizationType === index?true:false)
-                onClicked:
-                {
-                    cppObject.parameterizationType=index
-                    cppObject.parameterizationDynamic();
-                    canvas_ruler.requestPaint();
+                Component.onCompleted: active=(selectIndex === index?true:false)
+                onClicked: {
+                    for (var i = 0; i < lineColor.count; ++i){
+                        lineColor.itemAt(i).active=false;
+                    }
+                    active=true;
+                    selectIndex=index;
                 }
-
             }
         }
-    }
 
+    }
 
 
     function drawCross(ctx,rulerWidth){
@@ -217,60 +176,68 @@ Item {
         }
 
     }
-    function drawPoint(ctx,pos,pointColor="#FF0000",pointType="arc"){
-        ctx.fillStyle = pointColor;
-        if(pos.length>0){
-            for(var j = 0,len=pos.length; j < len; j++) {
-                ctx.moveTo(pos[j].x, pos[j].y)
-                if(pointType === "arc"){
-                    ctx.arc(pos[j].x,pos[j].y,5,0,2*Math.PI);
-                    ctx.fill()
-                }
-                else{
-                    ctx.fillRect(pos[j].x-5,pos[j].y-5,10,10);
-                    ctx.fill();
-                }
-            }
-        }
-    }
-    function drawCurve(ctx,pos,lineColor="#FF0000"){
-        ctx.strokeStyle = lineColor
-        ctx.lineWidth = 1
-        if(pos.length>0){
-            ctx.beginPath()
 
-            ctx.moveTo(pos[0].x, pos[0].y)
-            for(var j = 1,len=pos.length; j < len; j++) {
-                ctx.lineTo(pos[j].x,pos[j].y)
-                ctx.moveTo(pos[j].x,pos[j].y)
+    function cubicDraw(ctx,input,pos,lineColor="#FF0000"){
+
+        if(input.length>0){
+            var i,len;
+
+            //ctx.fillStyle="black";
+            for(i = 0,len=input.length; i < len; i++) {
+
+                if(i%3 == 0){
+
+                    ctx.beginPath();
+                    ctx.fillStyle="black";
+                    ctx.moveTo(input[i].x,input[i]);
+                    ctx.arc(input[i].x,input[i].y,5,0,2*Math.PI);
+                    ctx.fill();
+                    ctx.stroke();
+                }else{
+                    ctx.beginPath();
+                    ctx.fillStyle= "blue";
+                    ctx.moveTo(input[i].x-5,input[i]-5);
+                    ctx.fillRect(input[i].x-5,input[i].y-5,10,10);
+                    ctx.fill();
+                    ctx.stroke();
+                }
             }
-            ctx.stroke()
+            ctx.strokeStyle = lineColor;
+            ctx.beginPath();
+            for(i = 0,len=input.length; i < len-1; i++) {
+                if(i%3!=1){
+
+                    ctx.moveTo(input[i].x,input[i].y)
+                    ctx.lineTo(input[i+1].x,input[i+1].y)
+
+                }
+
+
+            }
+            ctx.stroke();
+
+            if(pos.length>0){
+                ctx.beginPath();
+                ctx.moveTo(pos[0].x,pos[0].y);
+                for(i = 1,len=pos.length; i < len; i++) {
+                    ctx.lineTo(pos[i].x,pos[i].y);
+                    ctx.moveTo(pos[i].x,pos[i].y);
+                }
+
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
         }
     }
-    function drawControlBar(ctx,control,left,right,lineColor="#FF0000"){
-        drawPoint(ctx,left,"#0000FF","rect")
-        //drawPoint(ctx,control,lineColor)
-        drawPoint(ctx,right,"#0000FF","rect")
-        ctx.strokeStyle = lineColor;
-        ctx.lineWidth = 2;
-        if(control.length>0){
-            ctx.beginPath()
-            for(var j = 0,len=control.length; j < len; j++) {
-                ctx.moveTo(left[j].x,left[j].y)
-                ctx.lineTo(control[j].x,control[j].y)
-                ctx.moveTo(control[j].x,control[j].y)
-                ctx.lineTo(right[j].x,right[j].y)
-            }
-            ctx.stroke()
-        }
-    }
+
+
     Canvas {
 
         id: canvas_ruler
         anchors {
             left: parent.left
             right: parent.right
-            top: radioButton.bottom
+            top: lineTool.bottom
             bottom: parent.bottom
             //margins: 50
         }
@@ -279,15 +246,11 @@ Item {
 
         onPaint: {
 
-            var ctx = getContext('2d');
+            var ctx = getContext('2d')
             ctx.clearRect(0, 0, width,height);
             drawRuler(ctx,rulerWidth);
             drawCross(ctx,rulerWidth);
-            drawPoint(ctx,cppObject.input,"#000000");
-            drawCurve(ctx,cppObject.controlArray.pos,lineColor.model[cppObject.parameterizationType]);
-            if(cppObject.change){
-                drawControlBar(ctx,cppObject.controlArray.control,cppObject.controlArray.leftControl,cppObject.controlArray.rightControl,lineColor.model[cppObject.parameterizationType])
-            }
+            cubicDraw(ctx,cppObject.input,cppObject.controlArray.pos,lineColor.model[selectIndex]);
         }
 
         MouseArea {
@@ -296,15 +259,14 @@ Item {
             anchors.fill: parent
 
             /*
-            onPressed: {
-                canvas.lastX = mouseX
-                canvas.lastY = mouseY
-            }
-            onPositionChanged: {
-                canvas.requestPaint()
-            }*/
+                onPressed: {
+                    canvas.lastX = mouseX
+                    canvas.lastY = mouseY
+                }
+                onPositionChanged: {
+                    canvas.requestPaint()
+                }*/
             onClicked: (mouse)=>{
-                           console.log(cppObject.curveType);
                            if (mouse.button === Qt.RightButton ) {
                                if(cppObject.change&&cppObject.moveNodeNum!=-1){
                                    cppObject.setControl(Qt.point(mouseX,mouseY))

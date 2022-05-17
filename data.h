@@ -159,8 +159,7 @@ public:
         return xs.size();
     }
     int drawSize(){
-        assert(xparam.size()==yparam.size());
-        return xparam.size();
+        return drawPoints.size();
     }
     QVector<QPointF> control;
     QVector<QPointF> leftControl;
@@ -168,7 +167,7 @@ public:
     void calculateParamRange(int range_num);
     std::vector<std::vector<float>> xparam;
     std::vector<std::vector<float>> yparam;
-    uint64_t nodePerRange = 50;//每段三次样条的采样数
+    uint64_t nodePerRange = 20;//每段三次样条的采样数
 
     std::vector<bool> fixed;//影响参数计算范围
     void clear(){

@@ -223,6 +223,7 @@
     <None Include="HW2.qml" />
     <None Include="HW3.qml" />
     <None Include="HW4.qml" />
+    <None Include="HW5.qml" />
     <None Include="Main.qml" />
     <QtRcc Include="qml.qrc">
     </QtRcc>

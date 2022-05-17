@@ -51,6 +51,16 @@ Window {
             active: false
             source : "qrc:/HW4.qml"
         }
+        Tab{
+            title:"HW5"
+            active: false
+            source : "qrc:/HW5.qml"
+        }
+        Tab{
+            title:"Bezier"
+            active: false
+            source : "qrc:/Bezier.qml"
+        }
     }
 
 
