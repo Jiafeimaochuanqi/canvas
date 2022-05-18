@@ -233,10 +233,13 @@ void Backend::setControl(QPointF p)
             controlArray.setPoint(moveNodeNum,p);
             if (moveNodeNum > 0) {
                 calculateParamRange(moveNodeNum - 1);
+                if (moveNodeNum < controlArray.nodeNum()-1) {
+                    calculateParamRange(moveNodeNum);
+                }
             }
             else if (moveNodeNum == 0) {
                 calculateParamRange(0);
-            }
+            }          
         }
         else if (moveNodeNum < 2 * controlArray.nodeNum()){
             int index=moveNodeNum - controlArray.nodeNum();
@@ -274,6 +277,9 @@ void Backend::setControl(QPointF p)
             updateCtrlPoints();
             if (nodeIndex > 0) {
                 calculateParamRange(nodeIndex - 1);
+                if (nodeIndex < controlArray.nodeNum()-1) {
+                    calculateParamRange(nodeIndex);
+                }
             }
             else if (nodeIndex == 0) {
                 calculateParamRange(0);
