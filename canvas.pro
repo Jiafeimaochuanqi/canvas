@@ -1,7 +1,6 @@
 TEMPLATE = app
 config+=console
 QT +=  qml quick core
-
 SOURCES += main.cpp \
     backend.cpp
 
