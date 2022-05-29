@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.28307.1738
+VisualStudioVersion = 15.0.28307.1684
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "canvas", "canvas.vcxproj", "{E192BBE0-82AA-3C57-A165-C059F317E86E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "canvas", "canvas.vcxproj", "{1A9F0045-98D2-309C-9094-BF6ED336438B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E192BBE0-82AA-3C57-A165-C059F317E86E}.Debug|x64.ActiveCfg = Debug|x64
-		{E192BBE0-82AA-3C57-A165-C059F317E86E}.Debug|x64.Build.0 = Debug|x64
-		{E192BBE0-82AA-3C57-A165-C059F317E86E}.Release|x64.ActiveCfg = Release|x64
-		{E192BBE0-82AA-3C57-A165-C059F317E86E}.Release|x64.Build.0 = Release|x64
+		{1A9F0045-98D2-309C-9094-BF6ED336438B}.Debug|x64.ActiveCfg = Debug|x64
+		{1A9F0045-98D2-309C-9094-BF6ED336438B}.Debug|x64.Build.0 = Debug|x64
+		{1A9F0045-98D2-309C-9094-BF6ED336438B}.Release|x64.ActiveCfg = Release|x64
+		{1A9F0045-98D2-309C-9094-BF6ED336438B}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {6E215F47-0B4A-455C-9054-901B71B3A7D0}
+		SolutionGuid = {0EB95845-56BB-4FBE-81A0-DF0945BF8136}
 	EndGlobalSection
 EndGlobal

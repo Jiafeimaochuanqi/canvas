@@ -6,21 +6,21 @@
 namespace adk {
 namespace fortune {
 
-template <typename Point,typename Type=typename Point::value_type>
+template <typename Vertex,typename Type=typename Vertex::value_type>
 class VoronoiEdge{
 public:
-    Point left;
-    Point right;
-    Point *end;
+    Vertex left;
+    Vertex right;
+    Vertex *end;
     bool rightYFirst;
     bool rightXFirst;
     Type m;
     Type b;
     Type x;
-    Point start;
-    VoronoiEdge<Point>* partner;
+    Vertex start;
+    VoronoiEdge<Vertex>* partner;
 public:
-    VoronoiEdge(Point p,Point left,Point right):left(left),right(right){
+    VoronoiEdge(Vertex p,Vertex left,Vertex right):left(left),right(right){
         rightYFirst = right.y > left.y;
         rightXFirst = right.x < left.x;
         if (left.y == right.y){
@@ -28,58 +28,58 @@ public:
             m = std::numeric_limits<Type>::max();
             b = NAN;//std::isnan(NAN)=true
             x = (right.x + left.x)/2;
-            start  = Point(p.x, p.y);
+            start  = Vertex(p.x, p.y);
         }
         else{
             //Compute line characteristics.
             m = (right.x - left.x) / (left.y - right.y);
             b = p.y - m*p.x;
             x = NAN;//std::isnan(NAN)=true
-            start  = Point(p.x, p.y);
+            start  = Vertex(p.x, p.y);
         }
     }
     void finish(int width,int height){
-        Point p;
+        Vertex p;
         if (rightYFirst){
             float y = width*m + b;
             if (y < 0){
-                p=Point(-b/m, 0);
+                p=Vertex(-b/m, 0);
             }
             else if(y > height){
-                p = Point((height - b)/m, height);
+                p = Vertex((height - b)/m, height);
             }
             else{
-                p = Point(width, y);
+                p = Vertex(width, y);
             }
         }
         else if (std::isnan(b)){
-            p = (x, 0);
+            p = Vertex(x, 0);
         }
         else{
-            p = Point(0, b);
+            p = Vertex(0, b);
         }
-        end =new Point(p);
+        end =new Vertex(p);
     }
     /**
      * @brief Return point of intersection between two (half-)edges.
      * @param other
      * @return
      */
-    Point* intersect(VoronoiEdge<Point>* other){
-        Point* p;
+    Vertex* intersect(VoronoiEdge<Vertex>* other){
+        Vertex* p;
         if (std::isnan(b)){
             if (std::isnan(other->b)){
                 if (this->x == other->x){
-                    return new Point(this->x,start.y);
+                    return new Vertex(this->x,start.y);
                 }else{
                     return nullptr;
                 }
             }
 
-            p = new Point(this->x, this->x*other->m + other->b);
+            p = new Vertex(this->x, this->x*other->m + other->b);
         }
         else if (std::isnan(other->b)){
-            p =new  Point(other->x, other->x*this->m + this->b);
+            p =new  Vertex(other->x, other->x*this->m + this->b);
         }
         else{
             //parallel lines have no intersection
@@ -89,7 +89,7 @@ public:
             else{
                 Type x = (other->b -this->b)/(this->m - other->m);
                 Type y = this->m*x + this->b;
-                p = new Point(x,y);
+                p = new Vertex(x,y);
             }
         }
         // self and other share a point. Ensure intersection is viable
@@ -118,19 +118,19 @@ public:
         return "[" + start.toString() + "," + endS + "]";
     }
 };
-template <typename Point,typename Type=typename Point::value_type>
+template <typename Vertex,typename Type=typename Vertex::value_type>
 class Event;
-template <typename Point,typename Type=typename Point::value_type>
+template <typename Vertex,typename Type=typename Vertex::value_type>
 class Arc{
 public:
-    Arc<Point>* parent;
-    Arc<Point>* left;
-    Arc<Point>* right;
+    Arc<Vertex>* parent;
+    Arc<Vertex>* left;
+    Arc<Vertex>* right;
     bool isLeaf;
-    Point* site;
-    Event<Point>* circleEvent;
-    VoronoiEdge<Point>* edge;
-    Arc(Point* point=nullptr,VoronoiEdge<Point>* edge=nullptr):site(point),edge(edge){
+    Vertex* site;
+    Event<Vertex>* circleEvent;
+    VoronoiEdge<Vertex>* edge;
+    Arc(Vertex* point=nullptr,VoronoiEdge<Vertex>* edge=nullptr):site(point),edge(edge){
         parent=nullptr;
         left=nullptr;
         right=nullptr;
@@ -157,10 +157,10 @@ public:
      * @param sweepY
      * @return
      */
-    Point pointOnBisectionLine(Type x,Type sweepY){
+    Vertex pointOnBisectionLine(Type x,Type sweepY){
         if (site->y == sweepY){
             //vertical line halfway between x and site's x
-            return Point((x+site->x)/2,sweepY);
+            return Vertex((x+site->x)/2,sweepY);
         }
         else{
             // slope of bisection line is negative reciprocal
@@ -169,14 +169,14 @@ public:
             Type halfway[2] = {(x+site->x)/2, (sweepY + site->y)/2};
             Type b = halfway[1] - m*halfway[0];
             Type y = m*x +b;
-            return Point(x,y);
+            return Vertex(x,y);
         }
     }
-    void setLeft(Arc<Point>* n){
+    void setLeft(Arc<Vertex>* n){
         left = n;
         n->parent = this;
     }
-    void setRight(Arc<Point>* n){
+    void setRight(Arc<Vertex>* n){
         right = n;
         n->parent = this;
     }
@@ -184,10 +184,10 @@ public:
      * @brief Find first ancestor with right link to a parent of self (if exists).
      * @param n
      */
-    Arc<Point>* getLeftAncestor(){
+    Arc<Vertex>* getLeftAncestor(){
 
-        Arc<Point>* parent = this->parent;
-        Arc<Point>*        n = this;
+        Arc<Vertex>* parent = this->parent;
+        Arc<Vertex>*        n = this;
         while( parent != nullptr && parent->left == n){
             n = parent;
             parent = parent->parent;
@@ -195,10 +195,10 @@ public:
 
         return parent;
     }
-    Arc<Point>* getRightAncestor(){
+    Arc<Vertex>* getRightAncestor(){
 
-        Arc<Point>* parent = this->parent;
-        Arc<Point>*        n = this;
+        Arc<Vertex>* parent = this->parent;
+        Arc<Vertex>*        n = this;
         while( parent != nullptr && parent->right == n){
             n = parent;
             parent = parent->parent;
@@ -210,9 +210,9 @@ public:
      * @brief Find largest value in left sub-tree.
      * @return
      */
-    Arc<Point>* getLargestLeftDescendant(){
+    Arc<Vertex>* getLargestLeftDescendant(){
 
-        Arc<Point>* n = left;
+        Arc<Vertex>* n = left;
         while (n&&!n->isLeaf){
             n = n->right;
         }
@@ -222,9 +222,9 @@ public:
      * @brief Find smallest value in right sub-tree.
      * @return
      */
-    Arc<Point>* getSmallestRightDescendant(){
+    Arc<Vertex>* getSmallestRightDescendant(){
 
-        Arc<Point>* n = right;
+        Arc<Vertex>* n = right;
         while (n&&! n->isLeaf){
             n = n->left;
         }
@@ -235,7 +235,7 @@ public:
      * @brief Remove leaf node from tree.
      */
     void remove(){
-        Arc<Point>* grandParent = this->parent->parent;
+        Arc<Vertex>* grandParent = this->parent->parent;
         if (this->parent->left == this){
             if (grandParent->left == parent){
                 grandParent->setLeft(parent->right);
@@ -255,34 +255,34 @@ public:
     }
 };
 
-template <typename Point,typename Type>
+template <typename Vertex,typename Type>
 class Event{
 public:
-    Point* p;
-    Point* site;
+    Vertex* p;
+    Vertex* site;
     Type y;
     bool deleted;
-    Arc<Point> * node;//Circle events link back to Arc node
+    Arc<Vertex> * node;//Circle events link back to Arc node
 public:
 
-    Event(Point* p,Point* site=nullptr):p(p),site(site){
+    Event(Vertex* p,Vertex* site=nullptr):p(p),site(site){
         y = p->y;
         deleted=false;
     }
     //Overload the < operator.
-    bool operator ==(const  Event<Point> &other){
+    bool operator ==(const  Event<Vertex> &other){
         return (this->p->x == other->p->x && this->p->y == other->p->y);
     }
-    bool operator !=(const  Event<Point> &other){
+    bool operator !=(const  Event<Vertex> &other){
         return !(*this== other);
     }
-    friend bool operator<= (const Event<Point>& e1, const Event<Point> &e2){
+    friend bool operator<= (const Event<Vertex>& e1, const Event<Vertex> &e2){
         return !(e1>e2);
     }
-    friend bool operator>= (const Event<Point>& e1, const Event<Point> &e2){
+    friend bool operator>= (const Event<Vertex>& e1, const Event<Vertex> &e2){
         return !(e1<e2);
     }
-    friend bool operator< (const Event<Point>& e1, const Event<Point> &e2)
+    friend bool operator< (const Event<Vertex>& e1, const Event<Vertex> &e2)
     {
         if (e1.y > e2.y){
             return true;
@@ -294,7 +294,7 @@ public:
         }
     }
     //Overload the > operator.
-    friend bool operator> (const Event<Point>& e1, const Event<Point> &e2)
+    friend bool operator> (const Event<Vertex>& e1, const Event<Vertex> &e2)
     {
         return e2<e1;
     }

@@ -2,11 +2,12 @@
 #define VORONOI2D_H
 #include "struct.h"
 #include <QVector>
+#include <QPointF>
 #include <queue>
 namespace adk {
 namespace fortune {
 template <typename Type,typename Point=QPointF>
-class PointT{
+class VertexT{
 public:
     Type x;
     Type y;
@@ -14,13 +15,13 @@ public:
     VoronoiPolygon<Point> *polygon;
 public:
     typedef Type value_type;
-    PointT(){
+    VertexT(){
     }
-    PointT(Type x,Type y,int idx=-1):x(x),y(y),idx(idx){
+    VertexT(Type x,Type y,int idx=-1):x(x),y(y),idx(idx){
 
     }
 
-    PointT(Point p,int idx=-1){
+    VertexT(Point p,int idx=-1){
         x=p.x();
         y=p.y();
         this->idx=idx;
@@ -40,21 +41,23 @@ public:
     {
         firstPoint=nullptr;
     }
-    void process(QVector<Point> points){
-        pq=std::priority_queue<Event<PointT<Type>>, std::vector<Event<PointT<Type>>>,std::less< typename std::vector< Event<PointT<Type> > >::value_type> >();
+    void process(int width,int height,QVector<Point> points){
+        this->width=width;
+        this->height=height;
+        pq=std::priority_queue<Event<VertexT<Type>>, std::vector<Event<VertexT<Type>>>,std::less< typename std::vector< Event<VertexT<Type> > >::value_type> >();
         edges.clear();
         tree=nullptr;
         firstPoint=nullptr;
         stillOnFirstRow=true;
         this->points.clear();
         for(int i=0;i<points.size();++i){
-            PointT<Type>* pt=new PointT<Type>(points[i],i);
+            VertexT<Type>* pt=new VertexT<Type>(Point(points[i].x,height-points[i].y),i);
             this->points.append(pt);
-            Event<PointT<Type>> event(pt,pt);
+            Event<VertexT<Type>> event(pt,pt);
             pq.push(event);
         }
         while(!pq.empty()){
-            Event<PointT<Type>> event=pq.top();
+            Event<VertexT<Type>> event=pq.top();
             pq.pop();
             if(event.deleted){
                 continue;
@@ -73,10 +76,10 @@ public:
             }
         }
         //complete edges that remain and stretch to infinity
-        if(tree&&tree->isLeaf){
+        if(tree&&!(tree->isLeaf)){
             finishEdges(tree);
             //Complete Voronoi Edges with partners.
-            for(VoronoiEdge<PointT<Type>>* e: edges){
+            for(VoronoiEdge<VertexT<Type>>* e: edges){
                 if (e->partner){
                     if (std::isnan(e->b)){
                         e->start.y =height;
@@ -92,9 +95,9 @@ public:
      * @brief Process a site event from the queue.
      * @param event
      */
-    void processSite(Event<PointT<Type>>& event){
+    void processSite(Event<VertexT<Type>>& event){
         if (tree == nullptr){
-            this->tree =new Arc<PointT<Type>>(event.p);
+            this->tree =new Arc<VertexT<Type>>(event.p);
             this->firstPoint = event.p;
             return;
         }
@@ -102,13 +105,13 @@ public:
         // which case the root is a leaf node. Note that when sorting events, ties
         // are broken by x coordinate, so the next point must be to the right
         if (this->tree->isLeaf && event.y == this->tree->site->y){
-            Arc<PointT<Type>>* left = this->tree;
-            Arc<PointT<Type>>* right = new Arc<PointT<Type>>(event.p);
+            Arc<VertexT<Type>>* left = this->tree;
+            Arc<VertexT<Type>>* right = new Arc<VertexT<Type>>(event.p);
 
-            PointT<Type> start(Point((this->firstPoint->x + event.p->x)/2,this->height));
-            VoronoiEdge<PointT<Type>> *edge =new VoronoiEdge<PointT<Type>>(start, *(this->firstPoint), *(event.p));
+            VertexT<Type> start(Point((this->firstPoint->x + event.p->x)/2,this->height));
+            VoronoiEdge<VertexT<Type>> *edge =new VoronoiEdge<VertexT<Type>>(start, *(this->firstPoint), *(event.p));
 
-            this->tree =new Arc<PointT<Type>>(nullptr,edge);
+            this->tree =new Arc<VertexT<Type>>(nullptr,edge);
             this->tree->setLeft(left);
             this->tree->setRight(right);
 
@@ -116,17 +119,17 @@ public:
             return;
         }
         //find point on parabola where event.pt.x bisects with vertical line,
-        Arc<PointT<Type>>* leaf = this->findArc(event.p->x);
+        Arc<VertexT<Type>>* leaf = this->findArc(event.p->x);
 
         // Special case where there are multiple points, all horizontal with first point
         // so keep expanding to the right
         if(this->stillOnFirstRow){
-            leaf->setLeft(new Arc<PointT<Type>>(leaf->site));
-            PointT<Type> start (Point((leaf->site->x + event.p->x)/2, this->height));
+            leaf->setLeft(new Arc<VertexT<Type>>(leaf->site));
+            VertexT<Type> start (Point((leaf->site->x + event.p->x)/2, this->height));
 
-            leaf->edge = new VoronoiEdge<PointT<Type>>(start, *(leaf->site), *(event.p));
+            leaf->edge = new VoronoiEdge<VertexT<Type>>(start, *(leaf->site), *(event.p));
             leaf->isLeaf = false;
-            leaf->setRight(new Arc<PointT<Type>>(event.p));
+            leaf->setRight(new Arc<VertexT<Type>>(event.p));
 
             this->edges.append(leaf->edge);
             return;
@@ -139,9 +142,9 @@ public:
 
         // Voronoi edges discovered between two sites. Leaf.site is higher
         // giving orientation to these edges.
-        PointT<Type> start = leaf->pointOnBisectionLine (event.p->x, this->sweepPt->y);
-        VoronoiEdge<PointT<Type>> *negRay =new VoronoiEdge<PointT<Type>>(start, *(leaf->site), *(event.p));
-        VoronoiEdge<PointT<Type>> *posRay =new  VoronoiEdge<PointT<Type>>(start, *(event.p), *(leaf->site));
+        VertexT<Type> start = leaf->pointOnBisectionLine (event.p->x, this->sweepPt->y);
+        VoronoiEdge<VertexT<Type>> *negRay =new VoronoiEdge<VertexT<Type>>(start, *(leaf->site), *(event.p));
+        VoronoiEdge<VertexT<Type>> *posRay =new  VoronoiEdge<VertexT<Type>>(start, *(event.p), *(leaf->site));
         negRay->partner = posRay;
         this->edges.append (negRay);
 
@@ -149,13 +152,13 @@ public:
         leaf->edge = posRay;
         leaf->isLeaf = false;
 
-        Arc<PointT<Type>> *left = new Arc<PointT<Type>>();
+        Arc<VertexT<Type>> *left = new Arc<VertexT<Type>>();
         left->edge = negRay;
-        left->setLeft (new Arc<PointT<Type>>(leaf->site));
-        left->setRight (new Arc<PointT<Type>>(event.p));
+        left->setLeft (new Arc<VertexT<Type>>(leaf->site));
+        left->setRight (new Arc<VertexT<Type>>(event.p));
 
         leaf->setLeft (left);
-        leaf->setRight (new Arc<PointT<Type>>(leaf->site));
+        leaf->setRight (new Arc<VertexT<Type>>(leaf->site));
 
         this->generateCircleEvent (left->left);
         this->generateCircleEvent (leaf->right);
@@ -164,13 +167,13 @@ public:
      * @brief Process circle event.
      * @param event
      */
-    void processCircle(Event<PointT<Type>>& event){
-        Arc<PointT<Type>> * node = event.node;
+    void processCircle(Event<VertexT<Type>>& event){
+        Arc<VertexT<Type>> * node = event.node;
         // Find neighbor on the left and right.
-        Arc<PointT<Type>> *leftA  = node->getLeftAncestor();
-        Arc<PointT<Type>> *left   = leftA->getLargestLeftDescendant();
-        Arc<PointT<Type>> *rightA = node->getRightAncestor();
-        Arc<PointT<Type>> *right  = rightA->getSmallestRightDescendant();
+        Arc<VertexT<Type>> *leftA  = node->getLeftAncestor();
+        Arc<VertexT<Type>> *left   = leftA->getLargestLeftDescendant();
+        Arc<VertexT<Type>> *rightA = node->getRightAncestor();
+        Arc<VertexT<Type>> *right  = rightA->getSmallestRightDescendant();
         // Eliminate old circle events if they exist.
         if (left->circleEvent){
             left->circleEvent->deleted = true;
@@ -179,7 +182,7 @@ public:
             right->circleEvent->deleted = true;
         }
         //Circle defined by left - node - right. Terminate Voronoi rays
-        PointT<Type> p = node->pointOnBisectionLine(event.p->x, this->sweepPt->y);
+        VertexT<Type> p = node->pointOnBisectionLine(event.p->x, this->sweepPt->y);
 
         //this is a real Voronoi point! Add to appropriate polygons
         if(left->site->polygon->last == node->site->polygon->first){
@@ -193,8 +196,8 @@ public:
         right->site->polygon->addToEnd(Point(p.x,p.y));
 
         //Found Voronoi vertex. Update edges appropriately
-        leftA->edge->end = new PointT<Type>(p);
-        rightA->edge->end = new PointT<Type>(p);
+        leftA->edge->end = new VertexT<Type>(p);
+        rightA->edge->end = new VertexT<Type>(p);
         // Find where to record new voronoi edge. Place with
         // (left) or (right), depending on which of leftA/rightA is higher
         // in the beachline tree. Without loss of generality, assume leftA is higher.
@@ -202,8 +205,8 @@ public:
         // interior node that represents breakpoint involving node, and this interior
         // node must now represent the breakpoint [left|right]. Since leftA is higher,
         // it will remain while rightA is being removed (effectively replaced by right).
-        Arc<PointT<Type>> *t = node;
-        Arc<PointT<Type>> *ancestor = nullptr;
+        Arc<VertexT<Type>> *t = node;
+        Arc<VertexT<Type>> *ancestor = nullptr;
         while (t != this->tree){
             t = t->parent;
             if (t == leftA){
@@ -213,7 +216,7 @@ public:
                 ancestor = rightA;
             }
 
-            ancestor->edge = new VoronoiEdge<PointT<Type>> (p, *(left->site), *(right->site));
+            ancestor->edge = new VoronoiEdge<VertexT<Type>> (p, *(left->site), *(right->site));
             this->edges.append (ancestor->edge);
         }
 
@@ -231,20 +234,20 @@ public:
      *  event to the priority queue for further processing.
      * @param node
      */
-    void generateCircleEvent( Arc<PointT<Type>> *node){
+    void generateCircleEvent( Arc<VertexT<Type>> *node){
 
         // Find neighbor on the left and right, should they exist.
-        Arc<PointT<Type>> * leftA= node->getLeftAncestor();
+        Arc<VertexT<Type>> * leftA= node->getLeftAncestor();
         if (leftA==nullptr){
             return;
         }
-        Arc<PointT<Type>> *left = leftA->getLargestLeftDescendant();
+        Arc<VertexT<Type>> *left = leftA->getLargestLeftDescendant();
 
-        Arc<PointT<Type>> *rightA = node->getRightAncestor();
+        Arc<VertexT<Type>> *rightA = node->getRightAncestor();
         if (rightA=nullptr){
             return;
         }
-        Arc<PointT<Type>> *right = rightA->getSmallestRightDescendant();
+        Arc<VertexT<Type>> *right = rightA->getSmallestRightDescendant();
 
         // sanity check. Must be different
         if (left->site == right->site){
@@ -252,7 +255,7 @@ public:
         }
 
         // If two edges have no intersection, leave now
-        PointT<Type> *p = leftA->edge->intersect (rightA->edge);
+        VertexT<Type> *p = leftA->edge->intersect (rightA->edge);
         if (p ==nullptr){
             return;
         }
@@ -260,7 +263,7 @@ public:
         Type radius = std::sqrt((p->x-left->site->x)*(p->x-left->site->x) + (p->y-left->site->y)*(p->y-left->site->y));
 
         // make sure choose point at bottom of circumcircle
-        Event<PointT<Type>>* circleEvent = new Event<PointT<Type>>(new PointT<Type>(p->x, p->y-radius));
+        Event<VertexT<Type>>* circleEvent = new Event<VertexT<Type>>(new VertexT<Type>(p->x, p->y-radius));
         if (circleEvent->p->y >= this->sweepPt->y){
             return;
         }
@@ -273,10 +276,11 @@ public:
      * @brief  Close all Voronoi edges against maximum bounding box, based on how edge extends.
      * @param tree
      */
-    void finishEdges(Arc<PointT<Type>>* tree){
+    void finishEdges(Arc<VertexT<Type>>* tree){
         tree->edge->finish(width, height);
-        tree->edge->left->polygon.addToFront(tree->edge->end);
-        tree->edge->right->polygon.addToEnd(tree->edge->end);
+        Point p(tree->edge->end->x,tree->edge->end->y);
+        tree->edge->left.polygon->addToFront(p);
+        tree->edge->right.polygon->addToEnd(p);
 
         if (! tree->left->isLeaf){
             finishEdges(tree->left);
@@ -285,8 +289,8 @@ public:
             finishEdges(tree->right);
         }
     }
-    Arc<PointT<Type>>* findArc(Type x){
-        Arc<PointT<Type>>* n=tree;
+    Arc<VertexT<Type>>* findArc(Type x){
+        Arc<VertexT<Type>>* n=tree;
         while(n!=nullptr&&!n->isLeaf){
             Type lineX=computeBreakPoint(n);
             // if tie, can choose either one.
@@ -321,9 +325,9 @@ public:
      * @param n
      * @return
      */
-    Type computeBreakPoint(Arc<PointT<Type>>* n){
-        Arc<PointT<Type>>* left = n->getLargestLeftDescendant();
-        Arc<PointT<Type>>* right= n->getSmallestRightDescendant();
+    Type computeBreakPoint(Arc<VertexT<Type>>* n){
+        Arc<VertexT<Type>>* left = n->getLargestLeftDescendant();
+        Arc<VertexT<Type>>* right= n->getSmallestRightDescendant();
 
         //degenerate case: might be same point, so return it.
         if (left->site == right->site){
@@ -380,12 +384,12 @@ private:
     int width;
     int height;
     bool stillOnFirstRow;
-    QVector<PointT<Type>*> points;
-    QVector <VoronoiEdge<PointT<Type>>* > edges;
-    PointT<Type>* sweepPt;
-    PointT<Type>* firstPoint;
-    Arc<PointT<Type>>* tree;
-    std::priority_queue<Event<PointT<Type>>, std::vector<Event<PointT<Type>>>,std::less< typename std::vector< Event<PointT<Type> > >::value_type> > pq;
+    QVector<VertexT<Type>*> points;
+    QVector <VoronoiEdge<VertexT<Type>>* > edges;
+    VertexT<Type>* sweepPt;
+    VertexT<Type>* firstPoint;
+    Arc<VertexT<Type>>* tree;
+    std::priority_queue<Event<VertexT<Type>>, std::vector<Event<VertexT<Type>>>,std::less< typename std::vector< Event<VertexT<Type> > >::value_type> > pq;
 };
 }
 }

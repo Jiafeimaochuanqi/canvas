@@ -11,6 +11,17 @@ Item {
     visible: true
     width: 500
     height: 500
+    CppObject{
+        id: cppObject
+        width:500
+        height:500
+    }
+    onWidthChanged:{
+        cppObject.width=width;
+    }
+    onHeightChanged: {
+        cppObject.height=height;
+    }
     /*
     Loader{
         objectName: "mainPageLoader"
@@ -24,11 +35,7 @@ Item {
     property var points:[]
     property int dragPointIndex: -1
 
-    CppObject{
-        id: cppObject
-        width:500
-        height:500
-    }
+
     function disk( ctx, x, y, radius ) {
         ctx.beginPath();
         ctx.arc(x,y,radius,0,Math.PI*2);
@@ -60,6 +67,7 @@ Item {
             ctx.clearRect(0, 0, width,height);
             pointsDraw(ctx,points)
         }
+
 
         MouseArea {
             id: area

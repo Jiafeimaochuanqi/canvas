@@ -136,6 +136,7 @@ void Backend::addInput(QPointF p)
 
 void Backend::addPoint(QPointF p)
 {
+    qDebug()<<p;
     points.append(p);
 }
 
@@ -369,7 +370,7 @@ void Backend::process()
         voronoiPtr=std::make_shared<Voronoi2D<QPointF>>(width,height);
         qDebug()<<"haha";
     }
-    voronoiPtr->process(points);
+    //voronoiPtr->process(width,height,points);
 }
 
 
@@ -509,6 +510,7 @@ int Backend::getWidth() const
 
 void Backend::setWidth(int newWidth)
 {
+    qDebug()<<newWidth;
     this->width=newWidth;
 }
 void Backend::calculateParamRange(int range_num)
@@ -628,5 +630,6 @@ int Backend::getHeight() const
 
 void Backend::setHeight(int newHeight)
 {
+    qDebug()<<newHeight;
     height = newHeight;
 }
