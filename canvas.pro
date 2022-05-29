@@ -11,9 +11,11 @@ RESOURCES += qml.qrc
 QML_IMPORT_PATH =
 
 # Default rules for deployment.
-include(deployment.pri)
+
 INCLUDEPATH+="D:\soft\eigen-3.4.0"
 HEADERS += \
+    adk/fortune/struct.h \
+    adk/fortune/voronoi2d.h \
     backend.h \
     data.h \
     mathutil.h

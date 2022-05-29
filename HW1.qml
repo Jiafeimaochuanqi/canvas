@@ -3,7 +3,6 @@ import QtQuick 2.0
 import QtQuick.Window 2.2
 //import QtQuick.Controls 2.2
 import QtQuick.Controls 1.4
-import Qt.labs.platform 1.1
 
 //引入我们注册的模块
 import MyCppObject 1.0
@@ -231,7 +230,7 @@ Item {
         }
     }
 
-    function drawCurve(ctx,pos,lineColor="#FF0000"){
+    function drawCurve(ctx,pos,lineColor){
         ctx.strokeStyle = lineColor
         ctx.lineWidth = 2
         if(pos.length>0){
@@ -262,7 +261,7 @@ Item {
             margins: 50
         }
 
-        property int ruleStyle: Main.RuleStyle.Up
+        property int ruleStyle:Main.RuleStyle.Up
         property real lastX:600
         property real lastY:600
         property real scaleX:1
@@ -306,7 +305,7 @@ Item {
             onPositionChanged: {
                 canvas.requestPaint()
             }*/
-            onClicked: (mouse)=>{
+            onClicked: {
                            if (mouse.button === Qt.RightButton ) {
                                option_menu.open()
                            }else{

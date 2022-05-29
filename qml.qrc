@@ -8,5 +8,6 @@
         <file>HW4.qml</file>
         <file>HW5.qml</file>
         <file>Bezier.qml</file>
+        <file>Voronoi2D.qml</file>
     </qresource>
 </RCC>

@@ -54,16 +54,31 @@
     <ClInclude Include="mathutil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="adk\fortune\struct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="adk\fortune\voronoi2d.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    
+    
+    
+    
     <CustomBuild Include="debug\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
     <CustomBuild Include="release\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
+    
+    
   </ItemGroup>
   <ItemGroup>
+    <None Include="Bezier.qml">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="ColorSquare.qml">
       <Filter>Resource Files</Filter>
     </None>
@@ -79,14 +94,17 @@
     <None Include="HW4.qml">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="HW5.qml">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="Main.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Voronoi2D.qml">
       <Filter>Resource Files</Filter>
     </None>
     <QtRcc Include="qml.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
-    <None Include="HW5.qml">
-      <Filter>Resource Files</Filter>
-    </None>
   </ItemGroup>
 </Project>

@@ -81,6 +81,9 @@ struct ControlPoint{
     double ldiff=0;
     double rdiff=0;
     bool fixed_diff = false;//首尾端点的属性影响样条计算方法
+	ControlPoint(double val, double ldiff, double rdiff, bool fixed_diff):val(val), ldiff(ldiff), rdiff(rdiff), fixed_diff(fixed_diff){
+
+	}
 };
 struct NodeArr {
     NodeArr():size(0) {}
@@ -186,8 +189,8 @@ public:
 
 inline void ControlPointArray2D::addPoint(QPointF &p)
 {
-    xs.push_back({p.x(),0.0,0.0,false});
-    ys.push_back({p.y(),0.0,0.0,false});
+    xs.push_back({ p.x(),0.0,0.0,false });
+    ys.push_back(ControlPoint{p.y(),0.0,0.0,false});
     fixed.push_back(false);
 }
 

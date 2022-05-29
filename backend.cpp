@@ -134,6 +134,11 @@ void Backend::addInput(QPointF p)
     emit inputChanged(input);
 }
 
+void Backend::addPoint(QPointF p)
+{
+    points.append(p);
+}
+
 void Backend::fitting(float start,float end,float step)
 {
     if(input.size()<=2)return;
@@ -358,6 +363,15 @@ void Backend::bezier()
     }
 }
 
+void Backend::process()
+{
+    if(!voronoiPtr){
+        voronoiPtr=std::make_shared<Voronoi2D<QPointF>>(width,height);
+        qDebug()<<"haha";
+    }
+    voronoiPtr->process(points);
+}
+
 
 
 const InterGaussDraw &Backend::getInterGauss() const
@@ -487,6 +501,16 @@ void Backend::setCurveType(const CurveType &newCurveType)
 {
     curveType = newCurveType;
 }
+
+int Backend::getWidth() const
+{
+    return width;
+}
+
+void Backend::setWidth(int newWidth)
+{
+    this->width=newWidth;
+}
 void Backend::calculateParamRange(int range_num)
 {
     int stpoint = range_num, edpoint = range_num + 1;
@@ -595,4 +619,14 @@ void Backend::updateCtrlPoints()
         controlArray.rightControl[i].setX(controlArray.xs[i].val+ controlArray.xs[i].rdiff * controlArray.showpara);
         controlArray.rightControl[i].setY(controlArray.ys[i].val+ controlArray.ys[i].rdiff * controlArray.showpara);
     }
+}
+
+int Backend::getHeight() const
+{
+    return height;
+}
+
+void Backend::setHeight(int newHeight)
+{
+    height = newHeight;
 }

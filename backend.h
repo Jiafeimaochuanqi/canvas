@@ -3,9 +3,12 @@
 #include <QObject>
 #include <QList>
 #include <QPoint>
+#include <memory>
+#include <adk/fortune/voronoi2d.h>
 #include "data.h"
 //派生自QObject
 //使用qmlRegisterType注册到QML中
+using namespace adk::fortune;
 class Backend : public QObject
 {
     Q_OBJECT
@@ -26,6 +29,8 @@ class Backend : public QObject
         Q_PROPERTY(ControlPointArray2D controlArray READ getControlArray WRITE setControlArray NOTIFY controlArrayChanged)
         Q_PROPERTY(bool change READ getChange WRITE setChange)
         Q_PROPERTY(int moveNodeNum READ getMoveNodeNum WRITE setMoveNodeNum)
+        Q_PROPERTY(int width READ getWidth WRITE setWidth)
+        Q_PROPERTY(int height READ getHeight WRITE setHeight)
 public:
     enum FittingType{CubicSpline=0,LeastSquares,Regression,Gauss};
     Q_ENUMS(FittingType)
@@ -48,12 +53,14 @@ public:
     void setInput(const QVector<QPointF> &newInput);
     Q_INVOKABLE void clearInput();//功能为处理数据
     Q_INVOKABLE void addInput(QPointF p);//功能为处理数据
+    Q_INVOKABLE void addPoint(QPointF p);//功能为处理数据
     Q_INVOKABLE void fitting(float start,float end,float step);//功能为处理数据
     Q_INVOKABLE int findSuitableCtrlPoint(QPointF p);//功能为处理数据
     Q_INVOKABLE void setControl(QPointF p);//功能为处理数据
     Q_INVOKABLE void parameterization();//功能为处理数据
     Q_INVOKABLE void parameterizationDynamic();//功能为处理数据
     Q_INVOKABLE void bezier();//功能为处理数据
+    Q_INVOKABLE void process();
     const InterGaussDraw &getInterGauss() const;
     void setInterGauss(const InterGaussDraw &newInterGauss);
 
@@ -84,6 +91,11 @@ public:
 
     const CurveType &getCurveType() const;
     void setCurveType(const CurveType &newCurveType);
+
+    int getWidth() const;
+    void setWidth(int newWidth);
+    int getHeight() const;
+    void setHeight(int newHeight);
 
 signals:
     //信号可以在QML中访问
@@ -126,6 +138,10 @@ private:
     void updateCtrlPoints();
     std::vector<float> ts;
     NodeArr drawArr;
+    std::shared_ptr<Voronoi2D<QPointF>> voronoiPtr;
+    QVector<QPointF> points;
+    int width;
+    int height;
 };
 
 #endif // BACKEND_H

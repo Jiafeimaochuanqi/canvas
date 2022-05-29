@@ -1,9 +1,8 @@
-//import QtQuick 2.10
-import QtQuick 2.0
+import QtQuick 2.2
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 //import QtQuick.Controls 2.2
-import Qt.labs.platform 1.0
+//import Qt.labs.platform 1.0
 
 
 Window {
@@ -16,9 +15,9 @@ Window {
         objectName: "mainPageLoader"
         anchors.fill:  parent
     }*/
-
+	
     enum RuleStyle {
-        Up=0,
+        Up,
         Down
     }
 
@@ -60,6 +59,11 @@ Window {
             title:"Bezier"
             active: false
             source : "qrc:/Bezier.qml"
+        }
+        Tab{
+            title:"Voronoi"
+            active: false
+            source : "qrc:/Voronoi2D.qml"
         }
     }
 
