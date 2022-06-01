@@ -4,16 +4,17 @@
 #include <QList>
 #include <QPoint>
 #include <memory>
-#include <adk/fortune/voronoi2d.h>
+#include <fortune/FortuneAlgorithm.h>
 #include "data.h"
 //派生自QObject
 //使用qmlRegisterType注册到QML中
-using namespace adk::fortune;
+
 class Backend : public QObject
 {
     Q_OBJECT
         //注册属性，使之可以在QML中访问--具体语法百度Q_PROPERTY
         Q_PROPERTY(QVariantList input READ getInput NOTIFY inputChanged)
+        Q_PROPERTY(QVariantList output READ getOutput NOTIFY inputChanged)
         Q_PROPERTY(QVariantList control READ getControl NOTIFY inputChanged)
         Q_PROPERTY(InterPolyDraw interPoly READ getInterPoly WRITE setInterPoly NOTIFY interPolyChanged)
         Q_PROPERTY(InterGaussDraw interGauss READ getInterGauss WRITE setInterGauss NOTIFY interGaussChanged)
@@ -40,6 +41,7 @@ public:
     Q_ENUMS(CurveType)
     Backend(QObject *parent=0);
     QVariantList getInput() const;
+    QVariantList getOutput() const;
     QVariantList getControl() const;
     const InterPolyDraw& getInterPoly() const;
     const LeastSquaresDraw& getLeastSquares() const;
@@ -112,11 +114,13 @@ signals:
     void controlArrayChanged(ControlPointArray2D controlArray);
 
 private:
+    float toTk(float y);
     bool change;
     FittingType fittingType;
     ParameterizationType parameterizationType;
     CurveType curveType;
     QVector<QPointF> input;
+    QVector<QPointF> output;
     std::vector<float> inputX;
     std::vector<float> inputY;
     InterPolyDraw interPoly;
@@ -138,7 +142,7 @@ private:
     void updateCtrlPoints();
     std::vector<float> ts;
     NodeArr drawArr;
-    std::shared_ptr<Voronoi2D<QPointF>> voronoiPtr;
+
     QVector<QPointF> points;
     int width;
     int height;

@@ -2,6 +2,7 @@
 #include <QVariantList>
 #include <QDebug>
 #include "mathutil.h"
+constexpr float OFFSET = 1.0f;
 Backend::Backend(QObject *parent): QObject(parent)
 {
     fittingType=FittingType::Gauss;
@@ -15,6 +16,15 @@ QVariantList Backend::getInput() const
     QVariantList l;
     l.reserve(input.size());
     for(QPointF p:input){
+        l.append(p);
+    }
+    return l;
+}
+QVariantList Backend::getOutput() const
+{
+    QVariantList l;
+    l.reserve(output.size());
+    for(QPointF p:output){
         l.append(p);
     }
     return l;
@@ -366,11 +376,65 @@ void Backend::bezier()
 
 void Backend::process()
 {
-    if(!voronoiPtr){
-        voronoiPtr=std::make_shared<Voronoi2D<QPointF>>(width,height);
-        qDebug()<<"haha";
+    std::vector<Vector2> points;
+    points.resize(this->points.size());
+    for(int k=0;k<this->points.size();++k){
+        points[k]=Vector2(this->points[k].x(),toTk(this->points[k].y()));
     }
-    //voronoiPtr->process(width,height,points);
+    output.clear();
+    // Construct diagram
+    FortuneAlgorithm algorithm(points);
+    auto start = std::chrono::steady_clock::now();
+    algorithm.construct();
+    auto duration = std::chrono::steady_clock::now() - start;
+    std::cout << "construction: " << std::chrono::duration_cast<std::chrono::milliseconds>(duration).count() << "ms" << '\n';
+
+    // Bound the diagram
+    start = std::chrono::steady_clock::now();
+    algorithm.bound(Box{-0.05, -0.05, (double)width+0.05, (double)height+0.05}); // Take the bounding box slightly bigger than the intersection box
+    duration = std::chrono::steady_clock::now() - start;
+    std::cout << "bounding: " << std::chrono::duration_cast<std::chrono::milliseconds>(duration).count() << "ms" << '\n';
+    VoronoiDiagram diagram = algorithm.getDiagram();
+
+    // Intersect the diagram with a box
+    start = std::chrono::steady_clock::now();
+    bool valid = diagram.intersect(Box{0, 0, (double)width, (double)height});
+    duration = std::chrono::steady_clock::now() - start;
+    std::cout << "intersection: " << std::chrono::duration_cast<std::chrono::milliseconds>(duration).count() << "ms" << '\n';
+    if (!valid)
+        throw std::runtime_error("An error occured in the box intersection algorithm");
+	//one site relate to one face (which contains circular halfedge linked list)
+    for (std::size_t i = 0; i < diagram.getNbSites(); ++i)
+    {
+        const VoronoiDiagram::Site* site = diagram.getSite(i);
+        Vector2 center = site->point;
+        VoronoiDiagram::Face* face = site->face;
+        VoronoiDiagram::HalfEdge* halfEdge = face->outerComponent;
+        if (halfEdge == nullptr)
+            continue;
+        /*while (halfEdge->prev != nullptr)
+        {
+            halfEdge = halfEdge->prev;
+            if (halfEdge == face->outerComponent)
+                break;
+        }*/
+        VoronoiDiagram::HalfEdge* start = halfEdge;
+        while (halfEdge != nullptr)
+        {
+            if (halfEdge->origin != nullptr && halfEdge->destination != nullptr)
+            {
+                Vector2 origin = (halfEdge->origin->point - center) * OFFSET + center;
+                Vector2 destination = (halfEdge->destination->point - center) * OFFSET + center;
+                //drawEdge(window, origin, destination, sf::Color::Red);
+                output.push_back(QPointF(origin.x,toTk(origin.y)));
+                output.push_back(QPointF(destination.x,toTk(destination.y)));
+            }
+            halfEdge = halfEdge->next;
+            if (halfEdge == start)
+                break;
+        }
+    }
+
 }
 
 
@@ -632,4 +696,16 @@ void Backend::setHeight(int newHeight)
 {
     qDebug()<<newHeight;
     height = newHeight;
+}
+
+float Backend::toTk(float y)
+{
+    if(y==std::numeric_limits<float>::max()){
+        return 0;
+    }
+    float result=height;
+    if(y!=std::numeric_limits<float>::min()){
+        result-=y;
+    }
+    return result;
 }

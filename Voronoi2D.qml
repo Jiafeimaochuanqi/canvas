@@ -49,6 +49,21 @@ Item {
             ctx.fillRect(points[i].x - 5, points[i].y - 5, 10, 10);
         }
     }
+    function lineDraw(ctx,lines,lineColor="#0000FF"){
+        var i;
+        ctx.fillStyle = lineColor;
+        ctx.beginPath()
+        for (i = 0; i < lines.length/2; i++) {
+
+
+            ctx.moveTo(lines[2*i+0].x,lines[2*i+0].y)
+            ctx.lineTo( lines[2*i+1].x,lines[2*i+1].y)
+
+            // 画出路径
+
+        }
+        ctx.stroke()
+    }
 
     Canvas {
 
@@ -65,7 +80,9 @@ Item {
             console.log("onPaint");
             var ctx = getContext('2d')
             ctx.clearRect(0, 0, width,height);
-            pointsDraw(ctx,points)
+            pointsDraw(ctx,points);
+            lineDraw(ctx,cppObject.output);
+
         }
 
 
@@ -128,7 +145,7 @@ Item {
             text: "Clear"
             shortcut: "Ctrl+C"
             onTriggered: {
-                cubicPoints=[];
+                points=[];
                 canvas_ruler.requestPaint();
             }
         }

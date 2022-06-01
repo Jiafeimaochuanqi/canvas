@@ -37,6 +37,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="fortune\Beachline.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fortune\Box.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fortune\Event.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fortune\FortuneAlgorithm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fortune\Vector2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fortune\VoronoiDiagram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="backend.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -45,6 +63,30 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="fortune\Arc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fortune\Beachline.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fortune\Box.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fortune\Event.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fortune\FortuneAlgorithm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fortune\PriorityQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fortune\Vector2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fortune\VoronoiDiagram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <QtMoc Include="backend.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -52,12 +94,6 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <ClInclude Include="mathutil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="adk\fortune\struct.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="adk\fortune\voronoi2d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
