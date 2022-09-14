@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Main.qml</file>
+        <file>HW1.qml</file>
+        <file>ColorSquare.qml</file>
+        <file>HW2.qml</file>
+        <file>HW3.qml</file>
+        <file>HW4.qml</file>
+        <file>HW5.qml</file>
+        <file>Bezier.qml</file>
+        <file>Voronoi2D.qml</file>
+        <file>Hull2d.qml</file>
+        <file>Delaunay2d.qml</file>
+    </qresource>
+</RCC>

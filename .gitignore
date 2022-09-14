@@ -1,0 +1,9 @@
+/*.user
+/.vs
+/debug
+/release
+canvas.vcxproj
+canvas.vcxproj.filters
+canvas.vcxproj.user
+canvas.sln
+/build
