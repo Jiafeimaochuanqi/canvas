@@ -16,7 +16,7 @@ CXX           = cl
 DEFINES       = -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_QML_DEBUG -DQT_QUICK_LIB -DQT_GUI_LIB -DQT_QMLMODELS_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
 CFLAGS        = -nologo -Zc:wchar_t -FS -Zc:strictStrings -Zi -MDd -W3 -w44456 -w44457 -w44458 /Fdbuild\canvas.vc.pdb $(DEFINES)
 CXXFLAGS      = -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -Zi -MDd -std:c++17 -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -EHsc /Fdbuild\canvas.vc.pdb $(DEFINES)
-INCPATH       = -I. -ID:\soft\tinyobjloader\install\include -ID:\soft\MyCGAL -ID:\soft\eigen-3.4.0 -ID:\Qt\5.15LTS\5.15.2\msvc2019_64\include -ID:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtQuick -ID:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtGui -ID:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtANGLE -ID:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtQmlModels -ID:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtQml -ID:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtNetwork -ID:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtCore -Idebug -I/include -ID:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\win32-msvc 
+INCPATH       = -I. -ID:\soft\tinyobjloader\install\include -ID:\soft\MyCGAL -ID:\soft\eigen-3.4.0 -ID:\soft\eigen-3.4.0 -ID:\Qt\5.15LTS\5.15.2\msvc2019_64\include -ID:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtQuick -ID:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtGui -ID:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtANGLE -ID:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtQmlModels -ID:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtQml -ID:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtNetwork -ID:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtCore -Idebug -I/include -ID:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\win32-msvc 
 LINKER        = link
 LFLAGS        = /NOLOGO /DYNAMICBASE /NXCOMPAT /DEBUG /SUBSYSTEM:CONSOLE "/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'"
 LIBS          = /LIBPATH:D:\soft\tinyobjloader\install\lib D:\soft\tinyobjloader\install\lib\tinyobjloaderd.lib D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5Quickd.lib D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5Guid.lib D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5QmlModelsd.lib D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5Qmld.lib D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5Networkd.lib D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5Cored.lib   
@@ -52,29 +52,29 @@ OBJECTS_DIR   = build
 
 SOURCES       = main.cpp \
 		backend.cpp \
-		fortune\Beachline.cpp \
-		fortune\Box.cpp \
-		fortune\Event.cpp \
-		fortune\FortuneAlgorithm.cpp \
-		fortune\Vector2.cpp \
-		fortune\VoronoiDiagram.cpp \
 		test.cpp debug\qrc_qml.cpp \
 		debug\moc_backend.cpp \
 		debug\moc_data.cpp
 OBJECTS       = build\main.obj \
 		build\backend.obj \
-		build\Beachline.obj \
-		build\Box.obj \
-		build\Event.obj \
-		build\FortuneAlgorithm.obj \
-		build\Vector2.obj \
-		build\VoronoiDiagram.obj \
 		build\test.obj \
 		build\qrc_qml.obj \
 		build\moc_backend.obj \
 		build\moc_data.obj
 
-DIST          =  D:\soft\MyCGAL\geometry\Delaunay\DelaunayCell.h \
+DIST          =  D:\soft\MyCGAL\geometry\CDT\include\CDT.h \
+		D:\soft\MyCGAL\geometry\CDT\include\CDTUtils.h \
+		D:\soft\MyCGAL\geometry\CDT\include\CDTUtils.hpp \
+		D:\soft\MyCGAL\geometry\CDT\include\LocatorKDTree.h \
+		D:\soft\MyCGAL\geometry\CDT\include\Triangulation.h \
+		D:\soft\MyCGAL\geometry\CDT\include\Triangulation.hpp \
+		D:\soft\MyCGAL\geometry\CDT\include\portable_nth_element.hpp \
+		D:\soft\MyCGAL\geometry\CDT\include\predicates.h \
+		D:\soft\MyCGAL\geometry\CDT\include\remove_at.hpp \
+		D:\soft\MyCGAL\geometry\Collision\BVHTriangleIndexNode.h \
+		D:\soft\MyCGAL\geometry\Collision\MeshSelfCollisionDetect.h \
+		D:\soft\MyCGAL\geometry\Collision\MeshTriTri.h \
+		D:\soft\MyCGAL\geometry\Delaunay\DelaunayCell.h \
 		D:\soft\MyCGAL\geometry\Delaunay\DelaunayTriangulation.h \
 		D:\soft\MyCGAL\geometry\Delaunay\DelaunayTriangulation2.h \
 		D:\soft\MyCGAL\geometry\Delaunay\DelaunayTriangulation3.h \
@@ -93,12 +93,20 @@ DIST          =  D:\soft\MyCGAL\geometry\Delaunay\DelaunayCell.h \
 		D:\soft\MyCGAL\geometry\Hull\SimplexList.h \
 		D:\soft\MyCGAL\geometry\Hull\SimplexWrap.h \
 		D:\soft\MyCGAL\geometry\Hull\VertexBuffer.h \
+		D:\soft\MyCGAL\geometry\Primitives\Segment.h \
+		D:\soft\MyCGAL\geometry\Primitives\Vector.h \
+		D:\soft\MyCGAL\geometry\Search\BVH.h \
+		D:\soft\MyCGAL\geometry\Search\Intersection.h \
+		D:\soft\MyCGAL\geometry\Search\Object.h \
+		D:\soft\MyCGAL\geometry\Search\PointInPolyhedron.h \
 		D:\soft\MyCGAL\geometry\Primitives\BBox.h \
 		D:\soft\MyCGAL\geometry\Primitives\IVertex.h \
 		D:\soft\MyCGAL\geometry\Primitives\Vertex.h \
 		D:\soft\MyCGAL\geometry\Primitives\Vertex2.h \
 		D:\soft\MyCGAL\geometry\Primitives\Vertex3.h \
 		D:\soft\MyCGAL\geometry\Primitives\Vertex4.h \
+		D:\soft\MyCGAL\geometry\Search\Ray.h \
+		D:\soft\MyCGAL\geometry\Search\Triangle.h \
 		D:\soft\MyCGAL\geometry\Voronoi\IVoronoiMesh.h \
 		D:\soft\MyCGAL\geometry\Voronoi\VoronoiEdge.h \
 		D:\soft\MyCGAL\geometry\Voronoi\VoronoiMesh.h \
@@ -108,24 +116,10 @@ DIST          =  D:\soft\MyCGAL\geometry\Delaunay\DelaunayCell.h \
 		D:\soft\MyCGAL\geometry\random_set.h \
 		backend.h \
 		data.h \
-		fortune\Arc.h \
-		fortune\Beachline.h \
-		fortune\Box.h \
-		fortune\Event.h \
-		fortune\FortuneAlgorithm.h \
-		fortune\PriorityQueue.h \
-		fortune\Vector2.h \
-		fortune\VoronoiDiagram.h \
 		mathutil.h \
 		objoperator.h \
 		test.h main.cpp \
 		backend.cpp \
-		fortune\Beachline.cpp \
-		fortune\Box.cpp \
-		fortune\Event.cpp \
-		fortune\FortuneAlgorithm.cpp \
-		fortune\Vector2.cpp \
-		fortune\VoronoiDiagram.cpp \
 		test.cpp
 QMAKE_TARGET  = canvas
 DESTDIR        = debug\ #avoid trailing-slash linebreak
@@ -152,26 +146,6 @@ DESTDIR_TARGET = debug\canvas.exe
 <<
 
 {debug}.c{build\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fobuild\ @<<
-	$<
-<<
-
-{fortune}.cpp{build\}.obj::
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -Fobuild\ @<<
-	$<
-<<
-
-{fortune}.cc{build\}.obj::
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -Fobuild\ @<<
-	$<
-<<
-
-{fortune}.cxx{build\}.obj::
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -Fobuild\ @<<
-	$<
-<<
-
-{fortune}.c{build\}.obj::
 	$(CC) -c $(CFLAGS) $(INCPATH) -Fobuild\ @<<
 	$<
 <<
@@ -203,7 +177,7 @@ all: Makefile.Debug  debug\canvas.exe
 
 debug\canvas.exe: D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5Quickd.lib D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5Guid.lib D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5QmlModelsd.lib D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5Qmld.lib D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5Networkd.lib D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5Cored.lib $(OBJECTS) 
 	$(LINKER) $(LFLAGS) /MANIFEST:embed /OUT:$(DESTDIR_TARGET) @<<
-build\main.obj build\backend.obj build\Beachline.obj build\Box.obj build\Event.obj build\FortuneAlgorithm.obj build\Vector2.obj build\VoronoiDiagram.obj build\test.obj build\qrc_qml.obj build\moc_backend.obj build\moc_data.obj
+build\main.obj build\backend.obj build\test.obj build\qrc_qml.obj build\moc_backend.obj build\moc_data.obj
 $(LIBS)
 <<
 
@@ -213,10 +187,10 @@ qmake: FORCE
 qmake_all: FORCE
 
 dist:
-	$(ZIP) canvas.zip $(SOURCES) $(DIST) canvas.pro D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\spec_pre.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\common\angle.conf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\common\windows-desktop.conf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\win32\windows_vulkan_sdk.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\common\windows-vulkan.conf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\common\msvc-desktop.conf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\qconfig.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3danimation.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3danimation_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dcore.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dcore_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dextras.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dextras_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dinput.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dinput_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dlogic.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dlogic_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquick.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquick_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickanimation.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickanimation_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickextras.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickextras_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickinput.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickinput_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickrender.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickrender_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickscene2d.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickscene2d_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3drender.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3drender_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_accessibility_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axbase.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axbase_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axcontainer.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axcontainer_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axserver.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axserver_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_bluetooth.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_bluetooth_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_bootstrap_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_charts.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_charts_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_concurrent.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_concurrent_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_core.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_core_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_dbus.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_dbus_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_designer.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_designer_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_designercomponents_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_devicediscovery_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_edid_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_egl_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_eventdispatcher_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_fb_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_fontdatabase_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_gamepad.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_gamepad_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_gui.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_gui_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_help.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_help_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_location.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_location_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_multimedia.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_multimedia_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_multimediawidgets.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_multimediawidgets_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_network.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_network_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_networkauth.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_networkauth_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_nfc.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_nfc_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_opengl.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_opengl_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_openglextensions.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_openglextensions_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_packetprotocol_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_platformcompositor_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_positioning.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_positioning_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_positioningquick.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_positioningquick_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_printsupport.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_printsupport_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qml.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qml_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmldebug_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmldevtools_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmlmodels.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmlmodels_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmltest.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmltest_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmlworkerscript.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmlworkerscript_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick3d.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick3d_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick3dassetimport.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick3dassetimport_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick3drender.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick3drender_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick3druntimerender.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick3druntimerender_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick3dutils.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick3dutils_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickcontrols2.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickcontrols2_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickparticles_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickshapes_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quicktemplates2.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quicktemplates2_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickwidgets.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickwidgets_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_remoteobjects.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_remoteobjects_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_repparser.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_repparser_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_scxml.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_scxml_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_sensors.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_sensors_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_serialbus.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_serialbus_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_serialport.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_serialport_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_sql.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_sql_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_svg.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_svg_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_testlib.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_testlib_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_texttospeech.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_texttospeech_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_theme_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_uiplugin.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_uitools.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_uitools_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_virtualkeyboard.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_virtualkeyboard_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_vulkan_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webchannel.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webchannel_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webengine.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webengine_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webenginecore.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webenginecore_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webenginecoreheaders_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webenginewidgets.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webenginewidgets_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_websockets.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_websockets_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webview.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webview_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_widgets.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_widgets_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_windowsuiautomation_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_winextras.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_winextras_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_xml.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_xml_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_xmlpatterns.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_xmlpatterns_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_zlib_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\qt_functions.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\qt_config.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\win32-msvc\qmake.conf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\spec_post.prf .qmake.stash D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\exclusive_builds.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\common\msvc-version.conf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\toolchain.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\default_pre.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\win32\default_pre.prf D:\soft\MyCGAL\geometry.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\resolve_config.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\exclusive_builds_post.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\default_post.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\build_pass.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\win32\console.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\qml_debug.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\precompile_header.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\warn_on.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\qt.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\resources_functions.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\resources.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\moc.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\win32\opengl.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\qmake_use.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\file_copies.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\testcase_targets.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\exceptions.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\yacc.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\lex.prf canvas.pro qml.qrc D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5Quickd.prl D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5Guid.prl D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5QmlModelsd.prl D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5Qmld.prl D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5Networkd.prl D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5Cored.prl   qml.qrc D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\data\dummy.cpp D:\soft\MyCGAL\geometry\Delaunay\DelaunayCell.h D:\soft\MyCGAL\geometry\Delaunay\DelaunayTriangulation.h D:\soft\MyCGAL\geometry\Delaunay\DelaunayTriangulation2.h D:\soft\MyCGAL\geometry\Delaunay\DelaunayTriangulation3.h D:\soft\MyCGAL\geometry\Delaunay\IDelaunayTriangulation.h D:\soft\MyCGAL\geometry\Hull\ConnectorList.h D:\soft\MyCGAL\geometry\Hull\ConvexHull.h D:\soft\MyCGAL\geometry\Hull\details\ConvexHull.inl D:\soft\MyCGAL\geometry\Hull\DeferredSimplex.h D:\soft\MyCGAL\geometry\Hull\IConvexHull.h D:\soft\MyCGAL\geometry\Hull\MathHelper.h D:\soft\MyCGAL\geometry\Hull\ObjectBuffer.h D:\soft\MyCGAL\geometry\Hull\ObjectManager.h D:\soft\MyCGAL\geometry\Hull\RandomStack.h D:\soft\MyCGAL\geometry\Hull\Simplex.h D:\soft\MyCGAL\geometry\Hull\SimplexConnector.h D:\soft\MyCGAL\geometry\Hull\SimplexList.h D:\soft\MyCGAL\geometry\Hull\SimplexWrap.h D:\soft\MyCGAL\geometry\Hull\VertexBuffer.h D:\soft\MyCGAL\geometry\Primitives\BBox.h D:\soft\MyCGAL\geometry\Primitives\IVertex.h D:\soft\MyCGAL\geometry\Primitives\Vertex.h D:\soft\MyCGAL\geometry\Primitives\Vertex2.h D:\soft\MyCGAL\geometry\Primitives\Vertex3.h D:\soft\MyCGAL\geometry\Primitives\Vertex4.h D:\soft\MyCGAL\geometry\Voronoi\IVoronoiMesh.h D:\soft\MyCGAL\geometry\Voronoi\VoronoiEdge.h D:\soft\MyCGAL\geometry\Voronoi\VoronoiMesh.h D:\soft\MyCGAL\geometry\Voronoi\VoronoiMesh2.h D:\soft\MyCGAL\geometry\Voronoi\VoronoiMesh3.h D:\soft\MyCGAL\geometry\Voronoi\VoronoiRegion.h D:\soft\MyCGAL\geometry\random_set.h backend.h data.h fortune\Arc.h fortune\Beachline.h fortune\Box.h fortune\Event.h fortune\FortuneAlgorithm.h fortune\PriorityQueue.h fortune\Vector2.h fortune\VoronoiDiagram.h mathutil.h objoperator.h test.h  main.cpp backend.cpp fortune\Beachline.cpp fortune\Box.cpp fortune\Event.cpp fortune\FortuneAlgorithm.cpp fortune\Vector2.cpp fortune\VoronoiDiagram.cpp test.cpp    
+	$(ZIP) canvas.zip $(SOURCES) $(DIST) canvas.pro D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\spec_pre.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\common\angle.conf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\common\windows-desktop.conf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\win32\windows_vulkan_sdk.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\common\windows-vulkan.conf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\common\msvc-desktop.conf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\qconfig.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3danimation.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3danimation_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dcore.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dcore_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dextras.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dextras_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dinput.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dinput_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dlogic.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dlogic_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquick.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquick_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickanimation.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickanimation_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickextras.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickextras_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickinput.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickinput_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickrender.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickrender_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickscene2d.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickscene2d_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3drender.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3drender_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_accessibility_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axbase.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axbase_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axcontainer.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axcontainer_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axserver.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axserver_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_bluetooth.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_bluetooth_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_bootstrap_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_charts.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_charts_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_concurrent.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_concurrent_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_core.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_core_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_dbus.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_dbus_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_designer.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_designer_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_designercomponents_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_devicediscovery_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_edid_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_egl_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_eventdispatcher_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_fb_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_fontdatabase_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_gamepad.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_gamepad_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_gui.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_gui_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_help.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_help_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_location.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_location_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_multimedia.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_multimedia_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_multimediawidgets.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_multimediawidgets_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_network.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_network_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_networkauth.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_networkauth_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_nfc.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_nfc_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_opengl.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_opengl_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_openglextensions.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_openglextensions_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_packetprotocol_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_platformcompositor_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_positioning.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_positioning_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_positioningquick.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_positioningquick_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_printsupport.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_printsupport_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qml.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qml_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmldebug_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmldevtools_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmlmodels.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmlmodels_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmltest.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmltest_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmlworkerscript.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmlworkerscript_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick3d.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick3d_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick3dassetimport.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick3dassetimport_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick3drender.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick3drender_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick3druntimerender.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick3druntimerender_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick3dutils.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick3dutils_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickcontrols2.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickcontrols2_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickparticles_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickshapes_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quicktemplates2.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quicktemplates2_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickwidgets.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickwidgets_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_remoteobjects.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_remoteobjects_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_repparser.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_repparser_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_scxml.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_scxml_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_sensors.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_sensors_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_serialbus.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_serialbus_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_serialport.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_serialport_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_sql.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_sql_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_svg.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_svg_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_testlib.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_testlib_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_texttospeech.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_texttospeech_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_theme_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_uiplugin.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_uitools.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_uitools_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_virtualkeyboard.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_virtualkeyboard_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_vulkan_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webchannel.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webchannel_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webengine.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webengine_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webenginecore.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webenginecore_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webenginecoreheaders_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webenginewidgets.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webenginewidgets_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_websockets.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_websockets_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webview.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webview_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_widgets.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_widgets_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_windowsuiautomation_support_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_winextras.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_winextras_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_xml.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_xml_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_xmlpatterns.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_xmlpatterns_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_zlib_private.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\qt_functions.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\qt_config.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\win32-msvc\qmake.conf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\spec_post.prf .qmake.stash D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\exclusive_builds.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\common\msvc-version.conf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\toolchain.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\default_pre.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\win32\default_pre.prf D:\soft\MyCGAL\geometry.pri D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\resolve_config.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\exclusive_builds_post.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\default_post.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\build_pass.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\win32\console.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\qml_debug.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\precompile_header.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\warn_on.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\qt.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\resources_functions.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\resources.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\moc.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\win32\opengl.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\qmake_use.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\file_copies.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\testcase_targets.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\exceptions.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\yacc.prf D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\lex.prf canvas.pro qml.qrc D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5Quickd.prl D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5Guid.prl D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5QmlModelsd.prl D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5Qmld.prl D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5Networkd.prl D:\Qt\5.15LTS\5.15.2\msvc2019_64\lib\Qt5Cored.prl   qml.qrc D:\Qt\5.15LTS\5.15.2\msvc2019_64\mkspecs\features\data\dummy.cpp D:\soft\MyCGAL\geometry\CDT\include\CDT.h D:\soft\MyCGAL\geometry\CDT\include\CDTUtils.h D:\soft\MyCGAL\geometry\CDT\include\CDTUtils.hpp D:\soft\MyCGAL\geometry\CDT\include\LocatorKDTree.h D:\soft\MyCGAL\geometry\CDT\include\Triangulation.h D:\soft\MyCGAL\geometry\CDT\include\Triangulation.hpp D:\soft\MyCGAL\geometry\CDT\include\portable_nth_element.hpp D:\soft\MyCGAL\geometry\CDT\include\predicates.h D:\soft\MyCGAL\geometry\CDT\include\remove_at.hpp D:\soft\MyCGAL\geometry\Collision\BVHTriangleIndexNode.h D:\soft\MyCGAL\geometry\Collision\MeshSelfCollisionDetect.h D:\soft\MyCGAL\geometry\Collision\MeshTriTri.h D:\soft\MyCGAL\geometry\Delaunay\DelaunayCell.h D:\soft\MyCGAL\geometry\Delaunay\DelaunayTriangulation.h D:\soft\MyCGAL\geometry\Delaunay\DelaunayTriangulation2.h D:\soft\MyCGAL\geometry\Delaunay\DelaunayTriangulation3.h D:\soft\MyCGAL\geometry\Delaunay\IDelaunayTriangulation.h D:\soft\MyCGAL\geometry\Hull\ConnectorList.h D:\soft\MyCGAL\geometry\Hull\ConvexHull.h D:\soft\MyCGAL\geometry\Hull\details\ConvexHull.inl D:\soft\MyCGAL\geometry\Hull\DeferredSimplex.h D:\soft\MyCGAL\geometry\Hull\IConvexHull.h D:\soft\MyCGAL\geometry\Hull\MathHelper.h D:\soft\MyCGAL\geometry\Hull\ObjectBuffer.h D:\soft\MyCGAL\geometry\Hull\ObjectManager.h D:\soft\MyCGAL\geometry\Hull\RandomStack.h D:\soft\MyCGAL\geometry\Hull\Simplex.h D:\soft\MyCGAL\geometry\Hull\SimplexConnector.h D:\soft\MyCGAL\geometry\Hull\SimplexList.h D:\soft\MyCGAL\geometry\Hull\SimplexWrap.h D:\soft\MyCGAL\geometry\Hull\VertexBuffer.h D:\soft\MyCGAL\geometry\Primitives\Segment.h D:\soft\MyCGAL\geometry\Primitives\Vector.h D:\soft\MyCGAL\geometry\Search\BVH.h D:\soft\MyCGAL\geometry\Search\Intersection.h D:\soft\MyCGAL\geometry\Search\Object.h D:\soft\MyCGAL\geometry\Search\PointInPolyhedron.h D:\soft\MyCGAL\geometry\Primitives\BBox.h D:\soft\MyCGAL\geometry\Primitives\IVertex.h D:\soft\MyCGAL\geometry\Primitives\Vertex.h D:\soft\MyCGAL\geometry\Primitives\Vertex2.h D:\soft\MyCGAL\geometry\Primitives\Vertex3.h D:\soft\MyCGAL\geometry\Primitives\Vertex4.h D:\soft\MyCGAL\geometry\Search\Ray.h D:\soft\MyCGAL\geometry\Search\Triangle.h D:\soft\MyCGAL\geometry\Voronoi\IVoronoiMesh.h D:\soft\MyCGAL\geometry\Voronoi\VoronoiEdge.h D:\soft\MyCGAL\geometry\Voronoi\VoronoiMesh.h D:\soft\MyCGAL\geometry\Voronoi\VoronoiMesh2.h D:\soft\MyCGAL\geometry\Voronoi\VoronoiMesh3.h D:\soft\MyCGAL\geometry\Voronoi\VoronoiRegion.h D:\soft\MyCGAL\geometry\random_set.h backend.h data.h mathutil.h objoperator.h test.h  main.cpp backend.cpp test.cpp    
 
 clean: compiler_clean 
-	-$(DEL_FILE) build\main.obj build\backend.obj build\Beachline.obj build\Box.obj build\Event.obj build\FortuneAlgorithm.obj build\Vector2.obj build\VoronoiDiagram.obj build\test.obj build\qrc_qml.obj build\moc_backend.obj build\moc_data.obj
+	-$(DEL_FILE) build\main.obj build\backend.obj build\test.obj build\qrc_qml.obj build\moc_backend.obj build\moc_data.obj
 	-$(DEL_FILE) build\canvas.vc.pdb debug\canvas.ilk debug\canvas.idb
 
 distclean: clean 
@@ -317,12 +291,6 @@ debug\moc_backend.cpp: backend.h \
 		D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtCore\qobject_impl.h \
 		D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtCore\QList \
 		D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtCore\QPoint \
-		fortune\FortuneAlgorithm.h \
-		fortune\PriorityQueue.h \
-		fortune\VoronoiDiagram.h \
-		fortune\Box.h \
-		fortune\Vector2.h \
-		fortune\Beachline.h \
 		data.h \
 		D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtCore\QVector \
 		D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtCore\QVariantList \
@@ -349,7 +317,9 @@ debug\moc_backend.cpp: backend.h \
 		D:\soft\MyCGAL\geometry\Voronoi\VoronoiRegion.h \
 		D:\soft\MyCGAL\geometry\Voronoi\VoronoiEdge.h \
 		D:\soft\MyCGAL\geometry\Primitives\BBox.h \
-		D:\soft\MyCGAL\geometry\Primitives\Vertex.h \
+		D:\soft\MyCGAL\geometry\Primitives\Segment.h \
+		D:\soft\MyCGAL\geometry\Search\Ray.h \
+		D:\soft\MyCGAL\geometry\Primitives\Vector.h \
 		D:\soft\MyCGAL\geometry\Delaunay\DelaunayTriangulation2.h \
 		D:\soft\MyCGAL\geometry\Delaunay\DelaunayTriangulation.h \
 		D:\soft\MyCGAL\geometry\Hull\ConvexHull.h \
@@ -365,11 +335,12 @@ debug\moc_backend.cpp: backend.h \
 		D:\soft\MyCGAL\geometry\Hull\ConnectorList.h \
 		D:\soft\MyCGAL\geometry\Hull\IConvexHull.h \
 		D:\soft\MyCGAL\geometry\Primitives\Vertex2.h \
+		D:\soft\MyCGAL\geometry\Primitives\Vertex.h \
 		D:\soft\MyCGAL\geometry\Primitives\Vertex3.h \
 		D:\soft\MyCGAL\geometry\Hull\details\ConvexHull.inl \
 		debug\moc_predefs.h \
 		D:\Qt\5.15LTS\5.15.2\msvc2019_64\bin\moc.exe
-	D:\Qt\5.15LTS\5.15.2\msvc2019_64\bin\moc.exe $(DEFINES) --compiler-flavor=msvc --include F:/coding/Qt/My/canvas/debug/moc_predefs.h -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/mkspecs/win32-msvc -IF:/coding/Qt/My/canvas -ID:/soft/tinyobjloader/install/include -ID:/soft/MyCGAL -ID:/soft/eigen-3.4.0 -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtQuick -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtGui -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtANGLE -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtQmlModels -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtQml -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtNetwork -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtCore -ID:\vs2017\Community\VC\Tools\MSVC\14.16.27023\ATLMFC\include -ID:\vs2017\Community\VC\Tools\MSVC\14.16.27023\include -I"C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\include\um" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\ucrt" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\shared" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\um" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\winrt" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\cppwinrt" backend.h -o debug\moc_backend.cpp
+	D:\Qt\5.15LTS\5.15.2\msvc2019_64\bin\moc.exe $(DEFINES) --compiler-flavor=msvc --include F:/coding/Qt/My/canvas/debug/moc_predefs.h -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/mkspecs/win32-msvc -IF:/coding/Qt/My/canvas -ID:/soft/tinyobjloader/install/include -ID:/soft/MyCGAL -ID:/soft/eigen-3.4.0 -ID:/soft/eigen-3.4.0 -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtQuick -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtGui -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtANGLE -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtQmlModels -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtQml -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtNetwork -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtCore -ID:\vs2017\Community\VC\Tools\MSVC\14.16.27023\ATLMFC\include -ID:\vs2017\Community\VC\Tools\MSVC\14.16.27023\include -I"C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\include\um" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\ucrt" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\shared" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\um" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\winrt" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\cppwinrt" backend.h -o debug\moc_backend.cpp
 
 debug\moc_data.cpp: data.h \
 		D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtCore\QVector \
@@ -442,7 +413,7 @@ debug\moc_data.cpp: data.h \
 		D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtCore\qsharedpointer_impl.h \
 		debug\moc_predefs.h \
 		D:\Qt\5.15LTS\5.15.2\msvc2019_64\bin\moc.exe
-	D:\Qt\5.15LTS\5.15.2\msvc2019_64\bin\moc.exe $(DEFINES) --compiler-flavor=msvc --include F:/coding/Qt/My/canvas/debug/moc_predefs.h -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/mkspecs/win32-msvc -IF:/coding/Qt/My/canvas -ID:/soft/tinyobjloader/install/include -ID:/soft/MyCGAL -ID:/soft/eigen-3.4.0 -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtQuick -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtGui -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtANGLE -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtQmlModels -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtQml -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtNetwork -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtCore -ID:\vs2017\Community\VC\Tools\MSVC\14.16.27023\ATLMFC\include -ID:\vs2017\Community\VC\Tools\MSVC\14.16.27023\include -I"C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\include\um" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\ucrt" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\shared" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\um" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\winrt" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\cppwinrt" data.h -o debug\moc_data.cpp
+	D:\Qt\5.15LTS\5.15.2\msvc2019_64\bin\moc.exe $(DEFINES) --compiler-flavor=msvc --include F:/coding/Qt/My/canvas/debug/moc_predefs.h -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/mkspecs/win32-msvc -IF:/coding/Qt/My/canvas -ID:/soft/tinyobjloader/install/include -ID:/soft/MyCGAL -ID:/soft/eigen-3.4.0 -ID:/soft/eigen-3.4.0 -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtQuick -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtGui -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtANGLE -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtQmlModels -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtQml -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtNetwork -ID:/Qt/5.15LTS/5.15.2/msvc2019_64/include/QtCore -ID:\vs2017\Community\VC\Tools\MSVC\14.16.27023\ATLMFC\include -ID:\vs2017\Community\VC\Tools\MSVC\14.16.27023\include -I"C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\include\um" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\ucrt" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\shared" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\um" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\winrt" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\cppwinrt" data.h -o debug\moc_data.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -561,12 +532,6 @@ build\main.obj: main.cpp D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtGui\QGuiAppl
 		D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtCore\QObject \
 		D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtCore\QList \
 		D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtCore\QPoint \
-		fortune\FortuneAlgorithm.h \
-		fortune\PriorityQueue.h \
-		fortune\VoronoiDiagram.h \
-		fortune\Box.h \
-		fortune\Vector2.h \
-		fortune\Beachline.h \
 		data.h \
 		D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtCore\QVector \
 		D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtCore\QVariantList \
@@ -581,7 +546,9 @@ build\main.obj: main.cpp D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtGui\QGuiAppl
 		D:\soft\MyCGAL\geometry\Voronoi\VoronoiRegion.h \
 		D:\soft\MyCGAL\geometry\Voronoi\VoronoiEdge.h \
 		D:\soft\MyCGAL\geometry\Primitives\BBox.h \
-		D:\soft\MyCGAL\geometry\Primitives\Vertex.h \
+		D:\soft\MyCGAL\geometry\Primitives\Segment.h \
+		D:\soft\MyCGAL\geometry\Search\Ray.h \
+		D:\soft\MyCGAL\geometry\Primitives\Vector.h \
 		D:\soft\MyCGAL\geometry\Delaunay\DelaunayTriangulation2.h \
 		D:\soft\MyCGAL\geometry\Delaunay\DelaunayTriangulation.h \
 		D:\soft\MyCGAL\geometry\Hull\ConvexHull.h \
@@ -597,6 +564,7 @@ build\main.obj: main.cpp D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtGui\QGuiAppl
 		D:\soft\MyCGAL\geometry\Hull\ConnectorList.h \
 		D:\soft\MyCGAL\geometry\Hull\IConvexHull.h \
 		D:\soft\MyCGAL\geometry\Primitives\Vertex2.h \
+		D:\soft\MyCGAL\geometry\Primitives\Vertex.h \
 		D:\soft\MyCGAL\geometry\Primitives\Vertex3.h \
 		D:\soft\MyCGAL\geometry\Hull\details\ConvexHull.inl \
 		test.h
@@ -657,12 +625,6 @@ build\backend.obj: backend.cpp backend.h \
 		D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtCore\qobject_impl.h \
 		D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtCore\QList \
 		D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtCore\QPoint \
-		fortune\FortuneAlgorithm.h \
-		fortune\PriorityQueue.h \
-		fortune\VoronoiDiagram.h \
-		fortune\Box.h \
-		fortune\Vector2.h \
-		fortune\Beachline.h \
 		data.h \
 		D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtCore\QVector \
 		D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtCore\QVariantList \
@@ -689,7 +651,9 @@ build\backend.obj: backend.cpp backend.h \
 		D:\soft\MyCGAL\geometry\Voronoi\VoronoiRegion.h \
 		D:\soft\MyCGAL\geometry\Voronoi\VoronoiEdge.h \
 		D:\soft\MyCGAL\geometry\Primitives\BBox.h \
-		D:\soft\MyCGAL\geometry\Primitives\Vertex.h \
+		D:\soft\MyCGAL\geometry\Primitives\Segment.h \
+		D:\soft\MyCGAL\geometry\Search\Ray.h \
+		D:\soft\MyCGAL\geometry\Primitives\Vector.h \
 		D:\soft\MyCGAL\geometry\Delaunay\DelaunayTriangulation2.h \
 		D:\soft\MyCGAL\geometry\Delaunay\DelaunayTriangulation.h \
 		D:\soft\MyCGAL\geometry\Hull\ConvexHull.h \
@@ -705,6 +669,7 @@ build\backend.obj: backend.cpp backend.h \
 		D:\soft\MyCGAL\geometry\Hull\ConnectorList.h \
 		D:\soft\MyCGAL\geometry\Hull\IConvexHull.h \
 		D:\soft\MyCGAL\geometry\Primitives\Vertex2.h \
+		D:\soft\MyCGAL\geometry\Primitives\Vertex.h \
 		D:\soft\MyCGAL\geometry\Primitives\Vertex3.h \
 		D:\soft\MyCGAL\geometry\Hull\details\ConvexHull.inl \
 		D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtCore\QDebug \
@@ -951,35 +916,6 @@ build\backend.obj: backend.cpp backend.h \
 		D:\soft\eigen-3.4.0\Eigen\src\Eigenvalues\ComplexSchur_LAPACKE.h \
 		D:\soft\eigen-3.4.0\Eigen\src\Eigenvalues\SelfAdjointEigenSolver_LAPACKE.h
 
-build\Beachline.obj: fortune\Beachline.cpp fortune\Beachline.h \
-		fortune\Vector2.h \
-		fortune\VoronoiDiagram.h \
-		fortune\Box.h \
-		fortune\Arc.h
-
-build\Box.obj: fortune\Box.cpp fortune\Box.h \
-		fortune\Vector2.h
-
-build\Event.obj: fortune\Event.cpp fortune\Event.h \
-		fortune\Vector2.h \
-		fortune\VoronoiDiagram.h \
-		fortune\Box.h
-
-build\FortuneAlgorithm.obj: fortune\FortuneAlgorithm.cpp fortune\FortuneAlgorithm.h \
-		fortune\PriorityQueue.h \
-		fortune\VoronoiDiagram.h \
-		fortune\Box.h \
-		fortune\Vector2.h \
-		fortune\Beachline.h \
-		fortune\Arc.h \
-		fortune\Event.h
-
-build\Vector2.obj: fortune\Vector2.cpp fortune\Vector2.h
-
-build\VoronoiDiagram.obj: fortune\VoronoiDiagram.cpp fortune\VoronoiDiagram.h \
-		fortune\Box.h \
-		fortune\Vector2.h
-
 build\test.obj: test.cpp test.h \
 		D:\soft\MyCGAL\geometry\Hull\ConvexHull.h \
 		D:\soft\MyCGAL\geometry\Hull\MathHelper.h \
@@ -1008,6 +944,9 @@ build\test.obj: test.cpp test.h \
 		D:\soft\MyCGAL\geometry\Voronoi\VoronoiRegion.h \
 		D:\soft\MyCGAL\geometry\Voronoi\VoronoiEdge.h \
 		D:\soft\MyCGAL\geometry\Primitives\BBox.h \
+		D:\soft\MyCGAL\geometry\Primitives\Segment.h \
+		D:\soft\MyCGAL\geometry\Search\Ray.h \
+		D:\soft\MyCGAL\geometry\Primitives\Vector.h \
 		D:\soft\MyCGAL\geometry\Delaunay\DelaunayTriangulation3.h \
 		D:\soft\MyCGAL\geometry\Delaunay\DelaunayTriangulation.h \
 		D:\Qt\5.15LTS\5.15.2\msvc2019_64\include\QtCore\QDir \

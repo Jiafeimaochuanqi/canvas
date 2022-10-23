@@ -14,6 +14,7 @@ public:
     static void testDuplicateConvexHull3D();
     static void testRemove();
     static void testList();
+    static void testUnique();
 };
 
 #endif // TEST_H

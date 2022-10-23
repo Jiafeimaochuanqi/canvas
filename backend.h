@@ -5,12 +5,11 @@
 #include <QPoint>
 #include <memory>
 #include <queue>
-#include <fortune/FortuneAlgorithm.h>
 #include "data.h"
 #include "geometry/Voronoi/VoronoiMesh2.h"
 //派生自QObject
 //使用qmlRegisterType注册到QML中
-using namespace HullDelaunayVoronoi::Primitives;
+using namespace MyCGAL::Primitives;
 class Backend : public QObject
 {
     Q_OBJECT
@@ -66,7 +65,6 @@ public:
     Q_INVOKABLE void parameterization();//功能为处理数据
     Q_INVOKABLE void parameterizationDynamic();//功能为处理数据
     Q_INVOKABLE void bezier();//功能为处理数据
-    Q_INVOKABLE void process();
     Q_INVOKABLE void quickHull2d();
     Q_INVOKABLE void playHull2d();
     Q_INVOKABLE void delaunay2d();
@@ -159,7 +157,7 @@ private:
     int width;
     int height;
 private:
-     std::queue<std::vector<HullDelaunayVoronoi::Hull::Simplex<Vertex2>*>> animation;
+     std::queue<std::vector<MyCGAL::Hull::Simplex<Vertex2>*>> animation;
      std::queue<std::vector<double>> centers;
      bool InBound(const Vertex2& v);
 };

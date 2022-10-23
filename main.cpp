@@ -6,6 +6,7 @@
 
 int main(int argc, char *argv[])
 {
+    Test::testUnique();
     std::cout << __cplusplus << std::endl;
     std::cout << __cpp_static_assert << std::endl;
     //Asserts floating point compatibility at compile time
@@ -30,7 +31,7 @@ int main(int argc, char *argv[])
     //    Test::testConvexHull3DInputObj("data\\stanford-bunny.obj");
     //    Test::testConvexHull3DInputObj("data\\teapot.obj");
     //Test::testSphereConvexHull3D();
-    Test::testVoronoi3DInputObj("data\\armadillo.obj");
+    //Test::testVoronoi3DInputObj("data\\armadillo.obj");
     QGuiApplication app(argc, argv);
     //qmlRegisterType注册C++类型至QML
     //arg1:import时模块名

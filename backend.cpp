@@ -17,7 +17,7 @@ Backend::Backend(QObject *parent): QObject(parent)
 
 Backend::~Backend()
 {
-    using namespace HullDelaunayVoronoi::Hull;
+    using namespace MyCGAL::Hull;
     while(!animation.empty()){
         std::vector<Simplex<Vertex2>*> frame=animation.front();
         animation.pop();
@@ -393,73 +393,10 @@ void Backend::bezier()
     }
 }
 
-void Backend::process()
-{
-    std::vector<Vector2> points;
-    points.resize(this->points.size());
-    for(int k=0;k<this->points.size();++k){
-        points[k]=Vector2(this->points[k].x(),toTk(this->points[k].y()));
-    }
-    output.clear();
-    // Construct diagram
-    FortuneAlgorithm algorithm(points);
-    auto start = std::chrono::steady_clock::now();
-    algorithm.construct();
-    auto duration = std::chrono::steady_clock::now() - start;
-    std::cout << "construction: " << std::chrono::duration_cast<std::chrono::milliseconds>(duration).count() << "ms" << '\n';
-
-    // Bound the diagram
-    start = std::chrono::steady_clock::now();
-    algorithm.bound(Box{-0.05, -0.05, (double)width+0.05, (double)height+0.05}); // Take the bounding box slightly bigger than the intersection box
-    duration = std::chrono::steady_clock::now() - start;
-    std::cout << "bounding: " << std::chrono::duration_cast<std::chrono::milliseconds>(duration).count() << "ms" << '\n';
-    VoronoiDiagram diagram = algorithm.getDiagram();
-
-    // Intersect the diagram with a box
-    start = std::chrono::steady_clock::now();
-    bool valid = diagram.intersect(Box{0, 0, (double)width, (double)height});
-    duration = std::chrono::steady_clock::now() - start;
-    std::cout << "intersection: " << std::chrono::duration_cast<std::chrono::milliseconds>(duration).count() << "ms" << '\n';
-    if (!valid)
-        throw std::runtime_error("An error occured in the box intersection algorithm");
-    //one site relate to one face (which contains circular halfedge linked list)
-    for (std::size_t i = 0; i < diagram.getNbSites(); ++i)
-    {
-        const VoronoiDiagram::Site* site = diagram.getSite(i);
-        Vector2 center = site->point;
-        VoronoiDiagram::Face* face = site->face;
-        VoronoiDiagram::HalfEdge* halfEdge = face->outerComponent;
-        if (halfEdge == nullptr)
-            continue;
-        /*while (halfEdge->prev != nullptr)
-        {
-            halfEdge = halfEdge->prev;
-            if (halfEdge == face->outerComponent)
-                break;
-        }*/
-        VoronoiDiagram::HalfEdge* start = halfEdge;
-        while (halfEdge != nullptr)
-        {
-            if (halfEdge->origin != nullptr && halfEdge->destination != nullptr)
-            {
-                Vector2 origin = (halfEdge->origin->point - center) * OFFSET + center;
-                Vector2 destination = (halfEdge->destination->point - center) * OFFSET + center;
-                //drawEdge(window, origin, destination, sf::Color::Red);
-                output.push_back(QPointF(origin.x,toTk(origin.y)));
-                output.push_back(QPointF(destination.x,toTk(destination.y)));
-            }
-            halfEdge = halfEdge->next;
-            if (halfEdge == start)
-                break;
-        }
-    }
-
-}
-
 void Backend::quickHull2d()
 {
-    using namespace HullDelaunayVoronoi::Primitives;
-    using namespace HullDelaunayVoronoi::Hull;
+    using namespace MyCGAL::Primitives;
+    using namespace MyCGAL::Hull;
     while(!animation.empty()){
         std::vector<Simplex<Vertex2>*> frame=animation.front();
         animation.pop();
@@ -513,8 +450,8 @@ void Backend::quickHull2d()
 
 void Backend::playHull2d()
 {
-    using namespace HullDelaunayVoronoi::Primitives;
-    using namespace HullDelaunayVoronoi::Hull;
+    using namespace MyCGAL::Primitives;
+    using namespace MyCGAL::Hull;
     if(animation.size()>0){
         std::vector<Simplex<Vertex2>*> frame=animation.front();
         animation.pop();
@@ -539,9 +476,9 @@ void Backend::playHull2d()
 
 void Backend::delaunay2d()
 {
-    using namespace HullDelaunayVoronoi::Primitives;
-    using namespace HullDelaunayVoronoi::Hull;
-    using namespace HullDelaunayVoronoi::Delaunay;
+    using namespace MyCGAL::Primitives;
+    using namespace MyCGAL::Hull;
+    using namespace MyCGAL::Delaunay;
     while(!animation.empty()){
         std::vector<Simplex<Vertex2>*> frame=animation.front();
         animation.pop();
@@ -576,7 +513,7 @@ void Backend::delaunay2d()
 
     DelaunayTriangulation2<Vertex2>* delaunay = new DelaunayTriangulation2<Vertex2>();
     for(QPointF p:points){
-        delaunay->AddVert(p.x(),p.y());
+        delaunay->AddVertex(p.x(),p.y());
     }
 
     delaunay->setCreateAnimation(true);
@@ -604,9 +541,9 @@ void Backend::delaunay2d()
 
 void Backend::playDelaunay2d()
 {
-    using namespace HullDelaunayVoronoi::Primitives;
-    using namespace HullDelaunayVoronoi::Hull;
-    using namespace HullDelaunayVoronoi::Delaunay;
+    using namespace MyCGAL::Primitives;
+    using namespace MyCGAL::Hull;
+    using namespace MyCGAL::Delaunay;
     if(animation.size()>0){
         std::vector<Simplex<Vertex2>*> frame=animation.front();
         animation.pop();
@@ -647,10 +584,10 @@ bool Backend::InBound(const Vertex2& v)
 void Backend::voronoi2d()
 {
     if(points.size()<3)return;
-    using namespace HullDelaunayVoronoi::Primitives;
-    using namespace HullDelaunayVoronoi::Hull;
-    using namespace HullDelaunayVoronoi::Delaunay;
-    using namespace HullDelaunayVoronoi::Voronoi;
+    using namespace MyCGAL::Primitives;
+    using namespace MyCGAL::Hull;
+    using namespace MyCGAL::Delaunay;
+    using namespace MyCGAL::Voronoi;
     VoronoiMesh2<Vertex2>* voronoiMesh=new VoronoiMesh2<Vertex2>();
     for(QPointF p:points){
         voronoiMesh->AddVert(p.x(),p.y());

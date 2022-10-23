@@ -21,8 +21,8 @@ Test::Test()
 
 void Test::testConvexHull3D()
 {
-    using namespace HullDelaunayVoronoi::Primitives;
-    using namespace HullDelaunayVoronoi::Hull;
+    using namespace MyCGAL::Primitives;
+    using namespace MyCGAL::Hull;
     Vertex3 p0(0,0,0,0);
     Vertex3 p1(1,0,0,1);
     Vertex3 p2(0,1,0,2);
@@ -161,8 +161,8 @@ void Test::testConvexHull3DInputObj(std::string objPath)
 
 
 
-    using namespace HullDelaunayVoronoi::Primitives;
-    using namespace HullDelaunayVoronoi::Hull;
+    using namespace MyCGAL::Primitives;
+    using namespace MyCGAL::Hull;
     ConvexHull3 convexHull3D(attribDst.vertices);
     std::vector<std::array<size_t,3>> faces=convexHull3D.outputFaceIndexes();
     std::string convexHullSaveName="result\\convexHull"+name;
@@ -328,25 +328,25 @@ bool WriteObj(const std::string& filename, const tinyobj::attrib_t& attributes, 
 
     return ret;
 }
-void RegionsToMeshes(HullDelaunayVoronoi::Voronoi::VoronoiMesh3<HullDelaunayVoronoi::Primitives::Vertex3>*voronoi,
+void RegionsToMeshes(MyCGAL::Voronoi::VoronoiMesh3<MyCGAL::Primitives::Vertex3>*voronoi,
                      Shape &shape,
                      Material &material,
                      Attribute &attribute)
 {
 
-    using namespace HullDelaunayVoronoi::Primitives;
-    using namespace HullDelaunayVoronoi::Hull;
-    using namespace HullDelaunayVoronoi::Voronoi;
+    using namespace MyCGAL::Primitives;
+    using namespace MyCGAL::Hull;
+    using namespace MyCGAL::Voronoi;
     int index_offset = 0;
     for(VoronoiRegion<Vertex3>* region : voronoi->Regions())
     {
         bool draw = true;
         if(voronoi->getInputed()){
-            BBox<3> &bbox = voronoi->bbox;
+            BBox3<double> &bbox = voronoi->bbox;
 
             for(DelaunayCell<Vertex3>* cell : region->Cells())
             {
-                if (!bbox.InBound(&cell->CircumCenter()))
+                if (!BBox3<double>::Inside(Vector3<double>(cell->CircumCenter()[0],cell->CircumCenter()[1],cell->CircumCenter()[2]),bbox))
                 {
                     draw = false;
                     break;
@@ -474,9 +474,9 @@ void Test::testVoronoi3DInputObj(std::string objPath)
     std::string originSaveName=absolute.toStdString()+"/result/"+name;
     std::string saveName=absolute.toStdString()+"/result/voronoi"+name;
 
-    using namespace HullDelaunayVoronoi::Primitives;
-    using namespace HullDelaunayVoronoi::Hull;
-    using namespace HullDelaunayVoronoi::Voronoi;
+    using namespace MyCGAL::Primitives;
+    using namespace MyCGAL::Hull;
+    using namespace MyCGAL::Voronoi;
     std::shared_ptr<VoronoiMesh3<Vertex3>> voronoi(new VoronoiMesh3<Vertex3>(attribDst.vertices));
     voronoi->compute();
     Shape shape;
@@ -514,8 +514,8 @@ void Test::testSphereConvexHull3D()
             vertices.push_back(z);
         }
     }
-    using namespace HullDelaunayVoronoi::Primitives;
-    using namespace HullDelaunayVoronoi::Hull;
+    using namespace MyCGAL::Primitives;
+    using namespace MyCGAL::Hull;
     ConvexHull3 convexHull3D(vertices);
     //convexHull3D.setCreateAnimation(true);
     std::vector<std::array<size_t,3>> faces=convexHull3D.outputFaceIndexes();
@@ -563,8 +563,8 @@ void Test::testPlaneConvexHull3D()
     vertices.push_back(p5);
     vertices.push_back(p6);
     vertices.push_back(p7);
-    using namespace HullDelaunayVoronoi::Primitives;
-    using namespace HullDelaunayVoronoi::Hull;
+    using namespace MyCGAL::Primitives;
+    using namespace MyCGAL::Hull;
     ConvexHull3 convexHull3D(vertices);
     std::vector<std::array<size_t,3>> faces=convexHull3D.outputFaceIndexes();
     ObjOperator<double>::saveObjOutput(vertices,std::vector<size_t>(),"result\\Plane.obj");
@@ -590,8 +590,8 @@ void Test::testDuplicateConvexHull3D()
     vertices.push_back(p5);
     vertices.push_back(p6);
     vertices.push_back(p7);
-    using namespace HullDelaunayVoronoi::Primitives;
-    using namespace HullDelaunayVoronoi::Hull;
+    using namespace MyCGAL::Primitives;
+    using namespace MyCGAL::Hull;
     ConvexHull3 convexHull3D(vertices);
     std::vector<std::array<size_t,3>> faces=convexHull3D.outputFaceIndexes();
     ObjOperator<double>::saveObjOutput(vertices,std::vector<size_t>(),"result\\Duplicate.obj");
@@ -661,4 +661,82 @@ void Test::testList()
     std::list<int>::iterator te=ll.end();
     ll.erase(--ll.end());
     std::cout<<(te==ll.end())<<std::endl;
+}
+
+void Test::testUnique()
+{
+    std::vector<std::array<size_t,3>> A={{3,1,2},{1,6,2},{5,2,3},{2,3,1},{2,3,5},{4,3,6}};
+    std::for_each(A.begin(),A.end(),[&](std::array<size_t,3>& array){
+        std::sort(array.begin(),array.end());
+    });
+    //    std::for_each(t.begin(),t.end(),[&](std::array<size_t,3>& array){
+    //       std::cout<<array[0]<<","<<array[1]<<","<<array[2]<<std::endl;
+    //    });
+    //    std::cout<<"========"<<std::endl;
+//    std::sort(A.begin(),A.end(),[&](const std::array<size_t,3>& a,const std::array<size_t,3>& b){
+//        if(a[0]<b[0]){
+//            return true;
+//        }else if(a[0]==b[0]){
+//            if(a[1]<b[1]){
+//                return true;
+//            }else if(a[1]==b[1]){
+//                return a[2]<b[2];
+//            }else{
+//                return false;
+//            }
+//        }else{
+//            return false;
+//        }
+//    });
+    std::for_each(A.begin(),A.end(),[&](std::array<size_t,3>& array){
+        std::cout<<array[0]<<","<<array[1]<<","<<array[2]<<std::endl;
+    });
+    std::cout<<"========"<<std::endl;
+    std::vector<std::array<size_t,3>> C=A;
+    std::sort(C.begin(),C.end(),[&](const std::array<size_t,3>& a,const std::array<size_t,3>& b){
+        if(a[0]<b[0]){
+            return true;
+        }else if(a[0]==b[0]){
+            if(a[1]<b[1]){
+                return true;
+            }else if(a[1]==b[1]){
+                return a[2]<b[2];
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    });
+    C.erase(std::unique(C.begin(), C.end()), C.end());
+    std::for_each(C.begin(),C.end(),[&](std::array<size_t,3>& array){
+        std::cout<<array[0]<<","<<array[1]<<","<<array[2]<<std::endl;
+    });
+    std::cout<<"========"<<std::endl;
+    std::vector<size_t> ia;
+    ia.reserve(C.size());
+    std::vector<size_t> ic;
+    ic.reserve(A.size());
+    std::transform(C.begin(), C.end(),
+                   std::back_inserter(ia),
+                   [&](std::array<size_t,3>& array) { return std::distance(A.begin(),
+                                                     std::find(A.begin(), A.end(), array));
+    });//C=A(ia);
+    std::cout<<"C=A(ia)"<<std::endl;
+    std::for_each(ia.begin(),ia.end(),[&](size_t& i){
+        std::cout<<i<<" ";
+    });
+    std::cout<<std::endl;
+    std::cout<<"--------"<<std::endl;
+    std::transform(A.begin(), A.end(),
+                   std::back_inserter(ic),
+                   [&](std::array<size_t,3>& array) { return std::distance(C.begin(),
+                                                     std::find(C.begin(), C.end(), array));
+    });//A=C(ic);
+    std::cout<<"A=C(ic)"<<std::endl;
+    std::for_each(ic.begin(),ic.end(),[&](size_t& i){
+        std::cout<<i<<" ";
+    });
+    std::cout<<std::endl;
+    std::cout<<"--------"<<std::endl;
 }

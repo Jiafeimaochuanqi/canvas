@@ -2,7 +2,7 @@
 
 # Normal to 4D hyper-plane
 
-three vector  $ \overrightarrow{x},\overrightarrow{y},\overrightarrow{z}\in R^4$ to define the 4D hyperplane, we want to find anther vector to perpendicular these three vectors, denote it as $\overrightarrow{n}$, so we have equations as follows:
+four 4D points construct three 4D vector  $ \overrightarrow{x},\overrightarrow{y},\overrightarrow{z}\in R^4$ to define the 4D hyperplane, we want to find anther vector to perpendicular these three vectors, denote it as $\overrightarrow{n}$, so we have equations as follows:
 $$
 \begin{aligned}
 &\left\{ 
@@ -129,6 +129,21 @@ z_{0}&z_{1}&z_{2}&z_{3}\\
 }\\
 \end{aligned}
 $$
+
+
+
+4D 法向其实只看最后一个维度的方向，其实只要满足
+$$
+\begin{align}
+Orientation\left( abcd \right)& =\left| \begin{matrix}
+   {{a}_{x}} & {{a}_{y}} & {{a}_{z}} & 1  \\
+   {{b}_{x}} & {{b}_{y}} & {{b}_{z}} & 1  \\
+   {{c}_{x}} & {{c}_{y}} & {{c}_{z}} & 1  \\
+   {{d}_{x}} & {{d}_{y}} & {{d}_{z}} & 1  \\
+\end{matrix} \right|  >0
+\end{align}
+$$
+即可。
 
 
 
