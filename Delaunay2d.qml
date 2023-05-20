@@ -43,12 +43,12 @@ Item {
         ctx.fill();
 
     }
-    function pointsDraw(ctx,points,pointColor="#FF0000",type="rect"){
+    function pointsDraw(ctx,points,type="rect",color="#FF0000"){
         var i;
-        ctx.fillStyle = pointColor;
+        ctx.fillStyle = color;
 
         for (i = 0; i < points.length; i++) {
-            if(type=="rect"){
+            if(type==="rect"){
                 ctx.fillRect(points[i].x - 5, points[i].y - 5, 10, 10);
             }else{
                 disk(ctx,points[i].x,points[i].y,2);
@@ -88,10 +88,10 @@ Item {
             ctx.clearRect(0, 0, width,height);
             pointsDraw(ctx,points);
             if(play){
-                pointsDraw(ctx,[cppObject.centroid],"#0000FF","cirlce");
+                pointsDraw(ctx,[cppObject.centroid],"cirlce","#0000FF");
             }
             lineDraw(ctx,cppObject.output);
-
+            pointsDraw(ctx,cppObject.centroids,"cirlce","red");
         }
 
 

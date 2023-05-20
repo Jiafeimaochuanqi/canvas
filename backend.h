@@ -16,6 +16,7 @@ class Backend : public QObject
         //注册属性，使之可以在QML中访问--具体语法百度Q_PROPERTY
         Q_PROPERTY(QVariantList input READ getInput NOTIFY inputChanged)
         Q_PROPERTY(QVariantList output READ getOutput NOTIFY inputChanged)
+        Q_PROPERTY(QVariantList centroids READ getCentroids NOTIFY inputChanged)
         Q_PROPERTY(QVariantList control READ getControl NOTIFY inputChanged)
         Q_PROPERTY(InterPolyDraw interPoly READ getInterPoly WRITE setInterPoly NOTIFY interPolyChanged)
         Q_PROPERTY(InterGaussDraw interGauss READ getInterGauss WRITE setInterGauss NOTIFY interGaussChanged)
@@ -108,6 +109,9 @@ public:
 
     QVariant getCentroid() const;
 
+    QVariantList getCentroids() const;
+    void setCentroids(const QVector<QPointF> &newCentroids);
+
 signals:
     //信号可以在QML中访问
     void inputChanged(QVector<QPointF> input);
@@ -130,6 +134,7 @@ private:
     CurveType curveType;
     QVector<QPointF> input;
     QVector<QPointF> output;
+    QVector<QPointF> centroids;
     QPointF centroid;
     std::vector<float> inputX;
     std::vector<float> inputY;

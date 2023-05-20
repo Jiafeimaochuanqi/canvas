@@ -521,6 +521,7 @@ void Backend::delaunay2d()
     animation=delaunay->Hull()->animation;
     centers=delaunay->Hull()->centers;
     output.clear();
+    centroids.clear();
     for(DelaunayCell<Vertex2>* cell : delaunay->Cells())
     {
         Simplex<Vertex2> *simplex= cell->Simplex();
@@ -535,6 +536,10 @@ void Backend::delaunay2d()
 
         output.push_back(p1);
         output.push_back(p2);
+
+        Vertex2 vc =  cell->CircumCenter();
+        QPointF center(vc.X(),vc.Y());
+        centroids.push_back(center);
     }
     delete delaunay;
 }
@@ -893,6 +898,21 @@ float Backend::toTk(float y)
         result-=y;
     }
     return result;
+}
+
+QVariantList Backend::getCentroids() const
+{
+    QVariantList l;
+    l.reserve(centroids.size());
+    for(QPointF p:centroids){
+        l.append(p);
+    }
+    return l;
+}
+
+void Backend::setCentroids(const QVector<QPointF> &newCentroids)
+{
+    centroids = newCentroids;
 }
 
 QVariant Backend::getCentroid() const

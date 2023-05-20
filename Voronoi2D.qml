@@ -33,6 +33,8 @@ Item {
     property bool draggingCubic: false
     property bool start:false
     property var points:[]
+    property var voronoi2dOuput:[]
+    property var delaunay2dOuput:[]
     property int dragPointIndex: -1
 
 
@@ -42,21 +44,26 @@ Item {
         ctx.fill();
 
     }
-    function pointsDraw(ctx,points,lineColor="#FF0000"){
+    function pointsDraw(ctx,points,type="rect",color="red"){
         var i;
-        ctx.fillStyle = "red";
+        ctx.fillStyle = color;
         for (i = 0; i < points.length; i++) {
-            ctx.fillRect(points[i].x - 5, points[i].y - 5, 10, 10);
+            if(type==="rect"){
+                ctx.fillRect(points[i].x - 5, points[i].y - 5, 10, 10);
+            }else if(type==="dot"){
+                disk(ctx, points[i].x, points[i].y, 2);
+            }
         }
     }
     function lineDraw(ctx,lines,lineColor="#0000FF"){
         var i;
-        ctx.fillStyle = lineColor;
+        ctx.strokeStyle = lineColor;
+        ctx.lineWidth = 1
         ctx.beginPath()
         for (i = 0; i < lines.length/2; i++) {
 
 
-            ctx.moveTo(lines[2*i+0].x,lines[2*i+0].y)
+            ctx.moveTo(lines[2*i+0].x,lines[2*i+0].y)            
             ctx.lineTo( lines[2*i+1].x,lines[2*i+1].y)
 
             // 画出路径
@@ -81,8 +88,9 @@ Item {
             var ctx = getContext('2d')
             ctx.clearRect(0, 0, width,height);
             pointsDraw(ctx,points);
-            lineDraw(ctx,cppObject.output);
-
+            pointsDraw(ctx,voronoi2dOuput,"dot","blue");
+            lineDraw(ctx,voronoi2dOuput,"black");
+            lineDraw(ctx,delaunay2dOuput,"#00BFFF");
         }
 
 
@@ -113,6 +121,9 @@ Item {
                                cppObject.addPoint(Qt.point(mouseX,mouseY));
                                //cppObject.process();
                                cppObject.voronoi2d();
+                               voronoi2dOuput=cppObject.output
+                               cppObject.delaunay2d();
+                               delaunay2dOuput=cppObject.output
                            }
                        }
 

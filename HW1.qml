@@ -306,7 +306,7 @@ Item {
             onPositionChanged: {
                 canvas.requestPaint()
             }*/
-            onClicked: {
+            onClicked: (mouse)=>{
                            if (mouse.button === Qt.RightButton ) {
                                option_menu.open()
                            }else{

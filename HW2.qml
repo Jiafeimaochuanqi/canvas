@@ -22,7 +22,7 @@ Item {
         id: cppObject
         onInputChanged://相应inputChanged信号
         {
-            processInput(canvas_ruler.rulerWidth,canvas_ruler.width,canvas_ruler.rulerWidth/2);
+            fitting(canvas_ruler.rulerWidth,canvas_ruler.width,canvas_ruler.rulerWidth/2);
         }
         onInterPolyChanged:
         {
