@@ -7,8 +7,8 @@ import QtQuick.Controls 1.4
 Item {
     id: bezier
     visible: true
-    width: 500
-    height: 500
+    width: 1000
+    height: 1000
     /*
     Loader{
         objectName: "mainPageLoader"

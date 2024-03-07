@@ -1,5 +1,5 @@
 TEMPLATE = app
-CONFIG +=console c++17
+CONFIG +=console c++11
 QT +=  qml quick core
 OBJECTS_DIR=$${PWD}/build
 INCLUDEPATH+=D:\soft\tinyobjloader\install\include

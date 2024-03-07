@@ -522,9 +522,9 @@ void Backend::delaunay2d()
     centers=delaunay->Hull()->centers;
     output.clear();
     centroids.clear();
-    for(DelaunayCell<Vertex2>* cell : delaunay->Cells())
+    for( Simplex<Vertex2> *simplex: delaunay->finite_cells())
     {
-        Simplex<Vertex2> *simplex= cell->Simplex();
+
         QPointF p0(simplex->Vertices()[0]->X(),simplex->Vertices()[0]->Y());
         QPointF p1(simplex->Vertices()[1]->X(),simplex->Vertices()[1]->Y());
         output.push_back(p0);
@@ -536,7 +536,7 @@ void Backend::delaunay2d()
 
         output.push_back(p1);
         output.push_back(p2);
-
+        DelaunayCell<Vertex2>* cell=delaunay->CreateCell(simplex);
         Vertex2 vc =  cell->CircumCenter();
         QPointF center(vc.X(),vc.Y());
         centroids.push_back(center);

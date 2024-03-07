@@ -9,12 +9,12 @@ import MyCppObject 1.0
 Item {
     id: delaunay2D
     visible: true
-    width: 500
-    height: 500
+    width: 1000
+    height: 1000
     CppObject{
         id: cppObject
-        width:500
-        height:500
+        width:1000
+        height:1000
     }
     onWidthChanged:{
         cppObject.width=width;

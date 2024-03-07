@@ -30,7 +30,7 @@ import QtQuick 2.0
 
 Rectangle {
     id: root
-    width: 48; height: 48
+    width: 96; height: 96
     color: "green"
     signal clicked
     property bool active: false

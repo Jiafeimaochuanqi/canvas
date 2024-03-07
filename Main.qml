@@ -8,8 +8,8 @@ import QtQuick.Controls 1.0
 Window {
     id:root
     visible: true
-    width: 600
-    height: 600
+    width: 1200
+    height: 1200
     /*
     Loader{
         objectName: "mainPageLoader"

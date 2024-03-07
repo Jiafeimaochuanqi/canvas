@@ -9,12 +9,13 @@ import MyCppObject 1.0
 Item {
     id: voronoi2D
     visible: true
-    width: 500
-    height: 500
+    width: 1000
+    height: 1000
+
     CppObject{
         id: cppObject
-        width:500
-        height:500
+        width:1000
+        height:1000
     }
     onWidthChanged:{
         cppObject.width=width;
@@ -55,10 +56,19 @@ Item {
             }
         }
     }
-    function lineDraw(ctx,lines,lineColor="#0000FF"){
+    function lineDraw(ctx,lines,lineColor="#0000FF",lineType="solid"){
         var i;
         ctx.strokeStyle = lineColor;
         ctx.lineWidth = 1
+        ctx.lineCap = Qt.RoundCap;
+        if(lineType==="dash"){
+            ctx.setLineDash([5, 5]); // 设置为空数组或null
+        }else{
+            ctx.setLineDash([]); // 设置虚线的样式，[线段长度, 间隔长度]
+        }
+
+
+
         ctx.beginPath()
         for (i = 0; i < lines.length/2; i++) {
 
@@ -86,11 +96,14 @@ Item {
         onPaint: {
             console.log("onPaint");
             var ctx = getContext('2d')
+
             ctx.clearRect(0, 0, width,height);
-            pointsDraw(ctx,points);
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, width, height);
+            pointsDraw(ctx,points,"dot");
             pointsDraw(ctx,voronoi2dOuput,"dot","blue");
-            lineDraw(ctx,voronoi2dOuput,"black");
-            lineDraw(ctx,delaunay2dOuput,"#00BFFF");
+            lineDraw(ctx,voronoi2dOuput,"black","solid");
+            lineDraw(ctx,delaunay2dOuput,"#00BFFF","dash");
         }
 
 

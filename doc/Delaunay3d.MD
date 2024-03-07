@@ -2,7 +2,7 @@
 
 # Normal to 4D hyper-plane
 
-four 4D points construct three 4D vector  $ \overrightarrow{x},\overrightarrow{y},\overrightarrow{z}\in R^4$ to define the 4D hyperplane, we want to find anther vector to perpendicular these three vectors, denote it as $\overrightarrow{n}$, so we have equations as follows:
+four 4D points $(a,b,c,d)$ construct three 4D vector  $ \overrightarrow{x},\overrightarrow{y},\overrightarrow{z}\in R^4$ to define the 4D hyperplane, we want to find anther vector to perpendicular these three vectors, denote it as $\overrightarrow{n}$, so we have equations as follows:
 $$
 \begin{aligned}
 &\left\{ 
@@ -153,5 +153,5 @@ $$
 
 1. 空间中共圆的四点或者不共面的四点必定共球。
 2. 同一个4D超平面上与超抛物面相交的四点构成四边形，这四点在$oxyz$超平面的投影点必定共球。
-3. 若另一点$\widehat{e}$在四边形$\hat{a}\hat{b}\hat{c}\hat{d}$上方，则$\widehat{e}$在$oxyz$平面的投影点$e$必在球($abcd$的外接球)的外面;若另一点$\widehat{e}$在四边形$\hat{a}\hat{b}\hat{c}\hat{d}$xia方，则$\widehat{e}$在$oxyz$平面的投影点$e$必在球($abcd$的外接球)的外面。
+3. 若另一点$\widehat{e}$在四边形$\hat{a}\hat{b}\hat{c}\hat{d}$上方，则$\widehat{e}$在$oxyz$平面的投影点$e$必在球($abcd$的外接球)的外面;若另一点$\widehat{e}$在四边形$\hat{a}\hat{b}\hat{c}\hat{d}$下方，则$\widehat{e}$在$oxyz$平面的投影点$e$必在球($abcd$的外接球)的外面。
 4. 4D凸壳的任意四边形面（法向朝上的除外），它与任意一个邻接面必然满足非邻接点都在邻接面上方，所以所有点的投影满足空球特性。
